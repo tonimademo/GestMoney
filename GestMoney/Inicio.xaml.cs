@@ -16,12 +16,13 @@ using System.Windows.Shapes;
 namespace GestMoney
 {
     /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
+    /// Lógica de interacción para Inicio.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
+            
             InitializeComponent();
         }
     }
