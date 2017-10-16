@@ -27,7 +27,7 @@ namespace GestMoney
             result.Add(result_test.Key, result_test.Value);
 
             TextRange rango = new TextRange(txtInfo.Document.ContentEnd, txtInfo.Document.ContentEnd);
-            rango.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
+            
 
             foreach (KeyValuePair<Boolean, string> rst in result)
             {
@@ -35,11 +35,15 @@ namespace GestMoney
                 {
                     rango.Text = rst.Key + rst.Value;
                     rango.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Green);
+                    rango.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
+                    rango.ApplyPropertyValue(TextElement.FontSizeProperty, "15");
                 }
                 else
                 {
                     rango.Text = rst.Key + rst.Value;
                     rango.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
+                    rango.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
+                    rango.ApplyPropertyValue(TextElement.FontSizeProperty, "15");
                 }
             }
             
