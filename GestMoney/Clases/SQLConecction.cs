@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Data.SqlClient;
 
-namespace GestMoney.Funciones
+namespace GestMoney.Clases
 {
     class SQLConecction
     {
