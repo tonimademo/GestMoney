@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Data;
 
 namespace GestMoney.Clases
 {
@@ -29,11 +29,11 @@ namespace GestMoney.Clases
             SqlCommand command;
             if (id == 0)
             {
-                command = new SqlCommand("Select * from dbo.Factura", conection.conn);
+                command = new SqlCommand("Select * from dbo.Recibo", conection.conn);
             }
             else
             {
-                command = new SqlCommand("Select * from dbo.Factura where id = " + id, conection.conn);
+                command = new SqlCommand("Select * from dbo.Recibo where id = " + id, conection.conn);
             }
             
             
@@ -63,6 +63,36 @@ namespace GestMoney.Clases
                 }
             }
 
+        }
+
+        public KeyValuePair<Boolean, string> Insert(Dictionary<string, object> parametros, SQLConecction conection)
+        {
+
+            KeyValuePair<Boolean, string> result = new KeyValuePair<Boolean, string>();
+            SqlCommand command;
+            if (parametros == null || parametros.Count == 0)
+            {
+                result = new KeyValuePair<Boolean, string>(false, "Error: No hay parametros para insertar" );
+            }
+            else
+            {
+                command = new SqlCommand("insert into dbo.Recibo (tipo, importe, concepto, fecha_importe) values (@tipo, @importe, @concepto, @fecha_importe)");
+                //Preparo las variables por inyteccion
+                using (command)
+                {
+                    command.Connection = conection.conn;
+                 
+                    command.Parameters.Add("@tipo", SqlDbType.VarChar, 30).Value = parametros["tipo"];
+                    command.Parameters.Add("@importe", SqlDbType.VarChar, 30).Value = parametros["importe"];
+                    command.Parameters.Add("@concepto", SqlDbType.VarChar, 30).Value = parametros["concepto"];
+                    command.Parameters.Add("@fecha_importe", SqlDbType.VarChar, 30).Value = parametros["fecha_importe"];
+                    
+                }
+                command.ExecuteNonQuery();
+
+                result = new KeyValuePair<Boolean, string>(true, "");
+            }
+            return result;
         }
     }
 }
