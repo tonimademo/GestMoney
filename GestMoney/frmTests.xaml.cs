@@ -58,10 +58,11 @@ namespace GestMoney
 
         private void TestFacturaConsulta(SQLConecction conection)
         {
-
-            //Test 1: Insert de facturas
-            Factura factura = new Factura();
-            Dictionary<string, object> valores_insert = new Dictionary<string, object>{ { "tipo", 1 }, { "importe", 53.00 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
+            Factura factura;
+            Dictionary<string, object> valores_insert;
+            //Test 1: Insert de facturas correcto
+            factura = new Factura();
+            valores_insert = new Dictionary<string, object>{ { "tipo", 1 }, { "importe", 53.00 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
             result_test = factura.Insert(valores_insert, conection);
                
             if (result_test.Key ==true)
@@ -72,8 +73,36 @@ namespace GestMoney
             {
                 result.Add(new KeyValuePair<Boolean, string>(false, "Error al insertar recibos"));
             }
-            
-            //Test 2: consulta de todas las facturas
+
+            //Test 2: Insert de facturas erroneo (importe nulo)
+            factura = new Factura();
+            valores_insert = new Dictionary<string, object> { { "tipo", 1 }, { "importe", null }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
+            result_test = factura.Insert(valores_insert, conection);
+
+            if (result_test.Key == false && result_test.Value == "El importe no puede estar vacio")
+            {
+                result.Add(new KeyValuePair<Boolean, string>(true, "Error de importe null Correcto"));
+            }
+            else
+            {
+                result.Add(new KeyValuePair<Boolean, string>(false, "Error en comprobacion de importe"));
+            }
+
+            //Test 3: Insert de facturas erroneo (tipo nulo)
+            factura = new Factura();
+            valores_insert = new Dictionary<string, object> { { "tipo", null }, { "importe", 19.23 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
+            result_test = factura.Insert(valores_insert, conection);
+
+            if (result_test.Key == false && result_test.Value == "La factura debe tener un tipo valido")
+            {
+                result.Add(new KeyValuePair<Boolean, string>(true, "Error de tipo no valido Correcto"));
+            }
+            else
+            {
+                result.Add(new KeyValuePair<Boolean, string>(false, "Error en comprobacion de tipo"));
+            }
+
+            //Test 4: consulta de todas las facturas
             factura = new Factura(conection);
           
             if (factura.total.Count == 2)

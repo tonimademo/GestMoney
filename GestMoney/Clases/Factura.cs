@@ -62,7 +62,7 @@ namespace GestMoney.Clases
                     //reader.NextResult();
                 }
             }
-
+            reader.Close();
         }
 
         public KeyValuePair<Boolean, string> Insert(Dictionary<string, object> parametros, SQLConecction conection)
@@ -72,25 +72,39 @@ namespace GestMoney.Clases
             SqlCommand command;
             if (parametros == null || parametros.Count == 0)
             {
-                result = new KeyValuePair<Boolean, string>(false, "Error: No hay parametros para insertar" );
+                result = new KeyValuePair<Boolean, string>(false, "Error: No hay parametros para insertar");
             }
             else
             {
-                command = new SqlCommand("insert into dbo.Recibo (tipo, importe, concepto, fecha_importe) values (@tipo, @importe, @concepto, @fecha_importe)");
-                //Preparo las variables por inyteccion
-                using (command)
-                {
-                    command.Connection = conection.conn;
-                 
-                    command.Parameters.Add("@tipo", SqlDbType.VarChar, 30).Value = parametros["tipo"];
-                    command.Parameters.Add("@importe", SqlDbType.VarChar, 30).Value = parametros["importe"];
-                    command.Parameters.Add("@concepto", SqlDbType.VarChar, 30).Value = parametros["concepto"];
-                    command.Parameters.Add("@fecha_importe", SqlDbType.VarChar, 30).Value = parametros["fecha_importe"];
-                    
-                }
-                command.ExecuteNonQuery();
 
-                result = new KeyValuePair<Boolean, string>(true, "");
+                //Realizo las comprobaciones antes de insertar
+                if (parametros["importe"] == null)
+                {
+                    result = new KeyValuePair<Boolean, string>(false, "El importe no puede estar vacio");
+                }
+                else if (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"], conection) == true)
+                {
+                    result = new KeyValuePair<Boolean, string>(false, "La factura debe tener un tipo valido");
+                }
+                else
+                {
+                    
+                    command = new SqlCommand("insert into dbo.Recibo (tipo, importe, concepto, fecha_importe) values (@tipo, @importe, @concepto, @fecha_importe)");
+                    //Preparo las variables por inyteccion
+                    using (command)
+                    {
+                        command.Connection = conection.conn;
+
+                        command.Parameters.Add("@tipo", SqlDbType.VarChar, 30).Value = parametros["tipo"];
+                        command.Parameters.Add("@importe", SqlDbType.VarChar, 30).Value = parametros["importe"];
+                        command.Parameters.Add("@concepto", SqlDbType.VarChar, 30).Value = parametros["concepto"];
+                        command.Parameters.Add("@fecha_importe", SqlDbType.VarChar, 30).Value = parametros["fecha_importe"];
+
+                    }
+                    command.ExecuteNonQuery();
+
+                    result = new KeyValuePair<Boolean, string>(true, "");
+                }
             }
             return result;
         }
