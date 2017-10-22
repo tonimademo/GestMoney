@@ -61,8 +61,9 @@ namespace GestMoney.Clases
                     }
                     //reader.NextResult();
                 }
+                reader.Close();
             }
-            reader.Close();
+            
         }
 
         public KeyValuePair<Boolean, string> Insert(Dictionary<string, object> parametros, SQLConecction conection)
