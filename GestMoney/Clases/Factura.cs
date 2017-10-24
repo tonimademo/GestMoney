@@ -19,6 +19,7 @@ namespace GestMoney.Clases
         public DateTime fecha_importe;
         public DateTime gc_fecha;
         public List<Dictionary<string, object>> total = new List<Dictionary<string, object>>();
+        public List<string> campos = new List<string> { "id", "tipo", "concepto", "fecha_importe" };
 
         public Factura(){
         }
@@ -108,6 +109,122 @@ namespace GestMoney.Clases
                 }
             }
             return result;
+        }
+
+        public KeyValuePair<Boolean, string> DeleteAll(SQLConecction conection)
+        {
+
+            KeyValuePair<Boolean, string> result = new KeyValuePair<Boolean, string>();
+            SqlCommand command;
+            
+            //Realizo las comprobaciones antes de insertar
+            command = new SqlCommand("DELETE FROM dbo.Recibo");
+            //Preparo las variables por inyteccion
+            using (command)
+            {
+                command.Connection = conection.conn;
+
+            }
+            command.ExecuteNonQuery();
+
+            result = new KeyValuePair<Boolean, string>(true, "");
+            
+            return result;
+        }
+
+        public KeyValuePair<Boolean, string> Modify(Dictionary<string, object> condiciones, Dictionary<string, object> parametros, SQLConecction conection)
+        {
+
+            KeyValuePair<Boolean, string> result = new KeyValuePair<Boolean, string>();
+            SqlCommand command;
+            string sql_condicion = " WHERE 1 = 1 ";
+            string sql_update = "UPDATE dbo.Recibo set ";
+            bool primer_update = true;
+
+            try
+            {
+
+                if (parametros == null || parametros.Count == 0)
+                {
+                    result = new KeyValuePair<Boolean, string>(false, "Error: No hay parametros para modificar");
+                }
+                else if (condiciones == null || condiciones.Count == 0)
+                {
+                    result = new KeyValuePair<Boolean, string>(false, "Error: No hay condiciones para modificar");
+                }
+                else
+                {
+                    //Compruebo las condiciones
+                    foreach (KeyValuePair<string, object> condicion in condiciones)
+                    {
+                        if (campos.Any(item => item == condicion.Key))
+                        {
+                            sql_condicion += " AND " + condicion.Key;
+                            if (condicion.Value.GetType() == typeof(string))
+                            {
+                                sql_condicion += " = '" + condicion.Value + "'";
+                            }
+                            else
+                            {
+                                sql_condicion +=  " = " + condicion.Value;
+                            }
+                        
+                        }
+                        else
+                        {
+                            return new KeyValuePair<Boolean, string>(false, "Las condicion " + condicion.Key + " no es valida");
+                        }
+                    }
+
+                    //Compruebo los parametros
+                    //Realizo las comprobaciones antes de modificar
+                    if (parametros.ContainsKey("importe") && parametros["importe"] == null)
+                    {
+                        result = new KeyValuePair<Boolean, string>(false, "El importe no puede estar vacio");
+                    }
+                    else if (parametros.ContainsKey("tipo") && (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"], conection) == true))
+                    {
+                        result = new KeyValuePair<Boolean, string>(false, "La factura debe tener un tipo valido");
+                    }
+                    else
+                    {
+                        command = new SqlCommand();
+                        foreach (KeyValuePair<string, object> parametro in parametros)
+                        {
+                            sql_update += ((primer_update) ? "" : ", ") + parametro.Key;
+                            if (parametro.Value.GetType() == typeof(string))
+                            {
+                                sql_update += " = '" + parametro.Value + "'";
+                            }
+                            else
+                            {
+                                sql_update +=  " = " + parametro.Value;
+                            }
+                            primer_update = false;
+
+
+                        }
+                        //Preparo las variables por inyteccion
+                        using (command = new SqlCommand(sql_update + sql_condicion))
+                        {
+                            command.Connection = conection.conn;
+
+                        }
+                        command.ExecuteNonQuery();
+
+                        result = new KeyValuePair<Boolean, string>(true, "");
+                    }
+                }
+                return result;
+            }
+            catch (SqlException e)
+            {
+                return new KeyValuePair<Boolean, string>(false, "Error en la llamada SQL, Llame a un Administrador (" + e +")");
+            }
+            catch (Exception e)
+            {
+                return new KeyValuePair<Boolean, string>(false, "Error no controlado, Llame a un Administrador (" + e + ")");
+            }
         }
     }
 }

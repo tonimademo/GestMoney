@@ -31,7 +31,7 @@ namespace GestMoney
             TestFacturaConsulta(conection);
             
             TextRange rango;
-            int cont = 1;
+            int cont = 0;
 
             //Muestro los resultados en el formulario, cmabiando la fuente segun sea error o no
             foreach (KeyValuePair<Boolean, string> rst in result)
@@ -59,11 +59,25 @@ namespace GestMoney
         private void TestFacturaConsulta(SQLConecction conection)
         {
             Factura factura;
-            Dictionary<string, object> valores_insert;
+            Dictionary<string, object> valores;
+            Dictionary<string, object> condiciones;
+            //Test 0: Limpiar la BD
+            factura = new Factura();
+            result_test = factura.DeleteAll(conection);
+
+            if (result_test.Key == true)
+            {
+                result.Add(new KeyValuePair<Boolean, string>(true, "Delete Correcto"));
+            }
+            else
+            {
+                result.Add(new KeyValuePair<Boolean, string>(false, "Error al insertar recibos"));
+            }
+
             //Test 1: Insert de facturas correcto
             factura = new Factura();
-            valores_insert = new Dictionary<string, object>{ { "tipo", 1 }, { "importe", 53.00 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
-            result_test = factura.Insert(valores_insert, conection);
+            valores = new Dictionary<string, object>{ { "tipo", 1 }, { "importe", 53.00 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
+            result_test = factura.Insert(valores, conection);
                
             if (result_test.Key ==true)
             {
@@ -76,8 +90,8 @@ namespace GestMoney
 
             //Test 2: Insert de facturas erroneo (importe nulo)
             factura = new Factura();
-            valores_insert = new Dictionary<string, object> { { "tipo", 1 }, { "importe", null }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
-            result_test = factura.Insert(valores_insert, conection);
+            valores = new Dictionary<string, object> { { "tipo", 1 }, { "importe", null }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
+            result_test = factura.Insert(valores, conection);
 
             if (result_test.Key == false && result_test.Value == "El importe no puede estar vacio")
             {
@@ -90,8 +104,8 @@ namespace GestMoney
 
             //Test 3: Insert de facturas erroneo (tipo nulo)
             factura = new Factura();
-            valores_insert = new Dictionary<string, object> { { "tipo", null }, { "importe", 19.23 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
-            result_test = factura.Insert(valores_insert, conection);
+            valores = new Dictionary<string, object> { { "tipo", null }, { "importe", 19.23 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
+            result_test = factura.Insert(valores, conection);
 
             if (result_test.Key == false && result_test.Value == "La factura debe tener un tipo valido")
             {
@@ -102,18 +116,32 @@ namespace GestMoney
                 result.Add(new KeyValuePair<Boolean, string>(false, "Error en comprobacion de tipo"));
             }
 
-            //Test 4: consulta de todas las facturas
+            //Test 4: Consulta de todas las facturas
             factura = new Factura(conection);
           
-            if (factura.total.Count == 2)
+            if (factura.total.Count == 1)
             {
-                result.Add(new KeyValuePair<Boolean, string>(true, "Count = 2"));
+                result.Add(new KeyValuePair<Boolean, string>(true, "Count = 1"));
             }
             else
             {
                result.Add(new KeyValuePair<Boolean, string>(false, "Error al consultar todas las facturas de la tabla"));
             }
 
+            //Test 5: Modificar consultas
+            factura = new Factura(conection);
+            valores = new Dictionary<string, object> { { "importe", 100 }, { "concepto", "Modificacion_1" }, { "fecha_importe", "24/10/2017" } };
+            condiciones = new Dictionary<string, object> { { "concepto", "Test_1" } };
+            result_test = factura.Modify(condiciones, valores, conection);
+
+            if (result_test.Key == true)
+            {
+                result.Add(new KeyValuePair<Boolean, string>(true, "Modificacion Correcta"));
+            }
+            else
+            {
+                result.Add(new KeyValuePair<Boolean, string>(false, "Error en la modificacion del recibo"));
+            }
             //return new KeyValuePair<Boolean, string>(false, "Error al consultar la factura en la Base de Datos para los parametros: id= ");
 
         }
