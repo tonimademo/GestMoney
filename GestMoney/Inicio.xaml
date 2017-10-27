@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GestMoney"
         mc:Ignorable="d"
-        Title="Inicio" Background="#FFEAE2BF" Height="383.077" Width="869.923" ResizeMode="NoResize">
+        Title="Inicio" Background="#FFEAE2BF" Height="383.077" Width="869.923" ResizeMode="NoResize" WindowState="Maximized" Loaded="Inicio_Loaded">
 
     <Grid Height="269" Margin="6,61,6,0" VerticalAlignment="Top">
         <Grid.RowDefinitions>
@@ -15,8 +15,15 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="58*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid Height="210" Margin="10,13,10,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <DataGrid x:Name="dgvRecibos" Height="210" Margin="10,13,10,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=tipo}" ClipboardContentBinding="{x:Null}" Header="Tipo" Width="1*"/>
+                <DataGridTextColumn Binding="{Binding Path=importe}" ClipboardContentBinding="{x:Null}" Header="Importe" Width="2*"/>
+                <DataGridTextColumn Binding="{Binding Path=concepto}" ClipboardContentBinding="{x:Null}" Header="Concepto" Width="3*"/>
+                <DataGridTextColumn Binding="{Binding Path=fecha_importe}" ClipboardContentBinding="{x:Null}" Header="Fecha De Importe" Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Label Content="Fecha:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="43"/>
-        <ComboBox HorizontalAlignment="Left" Margin="58,10,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
+        <ComboBox x:Name="cboFechaRecibo" HorizontalAlignment="Left" Margin="58,10,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
     </Grid>
 </Window>

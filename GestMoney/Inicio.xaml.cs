@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GestMoney.Clases;
+using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GestMoney
 {
@@ -20,10 +11,29 @@ namespace GestMoney
     /// </summary>
     public partial class MainWindow : Window
     {
+        private String baseDatos = "GestMoney_Test";
+        private String vRecibos = "SELECT * FROM dbo.vRecibo";
+        private SqlDataAdapter dataAdapter;
+        private SqlCommandBuilder commandBuilder;
+
         public MainWindow()
         {
-            
             InitializeComponent();
+        }
+
+        private void Inicio_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+            DataTable dataTable = new DataTable();
+            SQLConecction conection = new SQLConecction();
+            conection.ConnectToSql(baseDatos);
+                       
+            dataAdapter = new SqlDataAdapter(vRecibos, conection.conn);
+
+            commandBuilder = new SqlCommandBuilder(dataAdapter);
+            dataAdapter.Fill(dataTable);
+            dgvRecibos.ItemsSource = dataTable.DefaultView;
+
         }
     }
 }
