@@ -9,14 +9,14 @@ namespace GestMoney.Clases
 {
     class Funciones
     {
-        public static bool ExisteEnTabla(string tabla, string condicion, SQLConecction conection)
+        public static bool ExisteEnTabla(string tabla, string condicion)
         {
             SqlCommand command;
             bool result;
 
             try
             {
-                command = new SqlCommand("select id from " + tabla + " where " + condicion, conection.conn);
+                command = new SqlCommand("select id from " + tabla + " where " + condicion, SQLConecction.conn);
 
                 SqlDataReader reader = command.ExecuteReader();
                 

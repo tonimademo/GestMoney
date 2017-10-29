@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Data;
 
 namespace GestMoney.Clases
@@ -30,11 +26,11 @@ namespace GestMoney.Clases
             SqlCommand command;
             if (id == 0)
             {
-                command = new SqlCommand("Select * from dbo.Recibo", conection.conn);
+                command = new SqlCommand("Select * from dbo.Recibo", SQLConecction.conn);
             }
             else
             {
-                command = new SqlCommand("Select * from dbo.Recibo where id = " + id, conection.conn);
+                command = new SqlCommand("Select * from dbo.Recibo where id = " + id, SQLConecction.conn);
             }
             
             
@@ -67,7 +63,7 @@ namespace GestMoney.Clases
             
         }
 
-        public KeyValuePair<Boolean, string> Insert(Dictionary<string, object> parametros, SQLConecction conection)
+        public KeyValuePair<Boolean, string> Insert(Dictionary<string, object> parametros)
         {
 
             KeyValuePair<Boolean, string> result = new KeyValuePair<Boolean, string>();
@@ -84,7 +80,7 @@ namespace GestMoney.Clases
                 {
                     result = new KeyValuePair<Boolean, string>(false, "El importe no puede estar vacio");
                 }
-                else if (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"], conection) == true)
+                else if (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"]) == true)
                 {
                     result = new KeyValuePair<Boolean, string>(false, "La factura debe tener un tipo valido");
                 }
@@ -95,7 +91,7 @@ namespace GestMoney.Clases
                     //Preparo las variables por inyteccion
                     using (command)
                     {
-                        command.Connection = conection.conn;
+                        command.Connection = SQLConecction.conn;
 
                         command.Parameters.Add("@tipo", SqlDbType.VarChar, 30).Value = parametros["tipo"];
                         command.Parameters.Add("@importe", SqlDbType.VarChar, 30).Value = parametros["importe"];
@@ -111,7 +107,7 @@ namespace GestMoney.Clases
             return result;
         }
 
-        public KeyValuePair<Boolean, string> DeleteAll(SQLConecction conection)
+        public KeyValuePair<Boolean, string> DeleteAll()
         {
 
             KeyValuePair<Boolean, string> result = new KeyValuePair<Boolean, string>();
@@ -122,7 +118,7 @@ namespace GestMoney.Clases
             //Preparo las variables por inyteccion
             using (command)
             {
-                command.Connection = conection.conn;
+                command.Connection = SQLConecction.conn;
 
             }
             command.ExecuteNonQuery();
@@ -132,7 +128,7 @@ namespace GestMoney.Clases
             return result;
         }
 
-        public KeyValuePair<Boolean, string> Modify(Dictionary<string, object> condiciones, Dictionary<string, object> parametros, SQLConecction conection)
+        public KeyValuePair<Boolean, string> Modify(Dictionary<string, object> condiciones, Dictionary<string, object> parametros)
         {
 
             KeyValuePair<Boolean, string> result = new KeyValuePair<Boolean, string>();
@@ -182,7 +178,7 @@ namespace GestMoney.Clases
                     {
                         result = new KeyValuePair<Boolean, string>(false, "El importe no puede estar vacio");
                     }
-                    else if (parametros.ContainsKey("tipo") && (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"], conection) == true))
+                    else if (parametros.ContainsKey("tipo") && (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"]) == true))
                     {
                         result = new KeyValuePair<Boolean, string>(false, "La factura debe tener un tipo valido");
                     }
@@ -207,7 +203,7 @@ namespace GestMoney.Clases
                         //Preparo las variables por inyteccion
                         using (command = new SqlCommand(sql_update + sql_condicion))
                         {
-                            command.Connection = conection.conn;
+                            command.Connection = SQLConecction.conn;
 
                         }
                         command.ExecuteNonQuery();

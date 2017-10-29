@@ -8,9 +8,9 @@ using System.Data.SqlClient;
 
 namespace GestMoney.Clases
 {
-    class SQLConecction
+    public class SQLConecction
     {
-        public SqlConnection conn = new SqlConnection();
+        public static SqlConnection conn = new SqlConnection();
 
         public void ConnectToSql(string database)
         {

@@ -11,7 +11,6 @@ namespace GestMoney
     /// </summary>
     public partial class MainWindow : Window
     {
-        private String baseDatos = "GestMoney_Test";
         private String vRecibos = "SELECT * FROM dbo.vRecibo";
         private SqlDataAdapter dataAdapter;
         private SqlCommandBuilder commandBuilder;
@@ -25,10 +24,8 @@ namespace GestMoney
         {
             
             DataTable dataTable = new DataTable();
-            SQLConecction conection = new SQLConecction();
-            conection.ConnectToSql(baseDatos);
                        
-            dataAdapter = new SqlDataAdapter(vRecibos, conection.conn);
+            dataAdapter = new SqlDataAdapter(vRecibos, SQLConecction.conn);
 
             commandBuilder = new SqlCommandBuilder(dataAdapter);
             dataAdapter.Fill(dataTable);

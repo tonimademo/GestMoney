@@ -16,7 +16,7 @@ namespace GestMoney
     public partial class frmTests : Window
     {
 
-        private String baseDatos = "GestMoney_Test";
+        
         //defino result_test como la clave-valor de cada test y result como el diccionario que los engloba
         private KeyValuePair<Boolean, string> result_test = new KeyValuePair<Boolean, string>();
         private List<KeyValuePair<Boolean, string>>  result = new List<KeyValuePair<Boolean, string>>();
@@ -24,11 +24,10 @@ namespace GestMoney
         public frmTests()
         {
             InitializeComponent();
-            SQLConecction conection = new SQLConecction();
-            conection.ConnectToSql(baseDatos);
+            
 
             //Inicio los tests
-            TestFacturaConsulta(conection);
+            TestFacturaConsulta();
             
             TextRange rango;
             int cont = 0;
@@ -56,14 +55,14 @@ namespace GestMoney
             
         }
 
-        private void TestFacturaConsulta(SQLConecction conection)
+        private void TestFacturaConsulta()
         {
             Factura factura;
             Dictionary<string, object> valores;
             Dictionary<string, object> condiciones;
             //Test 0: Limpiar la BD
             factura = new Factura();
-            result_test = factura.DeleteAll(conection);
+            result_test = factura.DeleteAll();
 
             if (result_test.Key == true)
             {
@@ -77,7 +76,7 @@ namespace GestMoney
             //Test 1: Insert de facturas correcto
             factura = new Factura();
             valores = new Dictionary<string, object>{ { "tipo", 1 }, { "importe", 53.00 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
-            result_test = factura.Insert(valores, conection);
+            result_test = factura.Insert(valores);
                
             if (result_test.Key ==true)
             {
@@ -91,7 +90,7 @@ namespace GestMoney
             //Test 2: Insert de facturas erroneo (importe nulo)
             factura = new Factura();
             valores = new Dictionary<string, object> { { "tipo", 1 }, { "importe", null }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
-            result_test = factura.Insert(valores, conection);
+            result_test = factura.Insert(valores);
 
             if (result_test.Key == false && result_test.Value == "El importe no puede estar vacio")
             {
@@ -105,7 +104,7 @@ namespace GestMoney
             //Test 3: Insert de facturas erroneo (tipo nulo)
             factura = new Factura();
             valores = new Dictionary<string, object> { { "tipo", null }, { "importe", 19.23 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
-            result_test = factura.Insert(valores, conection);
+            result_test = factura.Insert(valores);
 
             if (result_test.Key == false && result_test.Value == "La factura debe tener un tipo valido")
             {
@@ -117,7 +116,7 @@ namespace GestMoney
             }
 
             //Test 4: Consulta de todas las facturas
-            factura = new Factura(conection);
+            factura = new Factura();
           
             if (factura.total.Count == 1)
             {
@@ -129,10 +128,10 @@ namespace GestMoney
             }
 
             //Test 5: Modificar consultas
-            factura = new Factura(conection);
+            factura = new Factura();
             valores = new Dictionary<string, object> { { "importe", 100 }, { "concepto", "Modificacion_1" }, { "fecha_importe", "24/10/2017" } };
             condiciones = new Dictionary<string, object> { { "concepto", "Test_1" } };
-            result_test = factura.Modify(condiciones, valores, conection);
+            result_test = factura.Modify(condiciones, valores);
 
             if (result_test.Key == true)
             {
