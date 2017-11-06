@@ -9,13 +9,13 @@
 
     <Grid Height="269" Margin="6,61,6,0" VerticalAlignment="Top">
         <Grid.RowDefinitions>
-            <RowDefinition Height="46*"/>
-            <RowDefinition Height="223*"/>
+            <RowDefinition Height="64*"/>
+            <RowDefinition Height="205*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="58*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dgvRecibos" Height="210" Margin="10,13,10,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False">
+        <DataGrid x:Name="dgvRecibos" Height="183" Margin="10,12,10,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=tipo}" ClipboardContentBinding="{x:Null}" Header="Tipo" Width="1*"/>
                 <DataGridTextColumn Binding="{Binding Path=importe}" ClipboardContentBinding="{x:Null}" Header="Importe" Width="2*"/>
@@ -23,7 +23,12 @@
                 <DataGridTextColumn Binding="{Binding Path=fecha_importe}" ClipboardContentBinding="{x:Null}" Header="Fecha De Importe" Width="2*"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Label Content="Fecha:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="43"/>
-        <ComboBox x:Name="cboFechaRecibo" HorizontalAlignment="Left" Margin="58,10,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
+
+        <GroupBox Header="Filtrar" HorizontalAlignment="Left" Height="64" Margin="10,7,0,0" VerticalAlignment="Top" Width="832" Grid.RowSpan="2"/>
+        <Label Content="Desde:" HorizontalAlignment="Left" Margin="24,32,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="55"/>
+        <DatePicker x:Name="txtFiltroDesde" HorizontalAlignment="Left" Margin="70,34,0,0" VerticalAlignment="Top" Height="24" Width="113" CalendarClosed="txtFiltroDesde_CalendarClosed"/>
+        <Label Content="Hasta:" HorizontalAlignment="Left" Margin="200,32,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="43"/>
+        <DatePicker x:Name="txtFiltroHasta" HorizontalAlignment="Left" Margin="243,33,0,0" VerticalAlignment="Top" Height="24" Width="112"/>
+
     </Grid>
 </Window>
