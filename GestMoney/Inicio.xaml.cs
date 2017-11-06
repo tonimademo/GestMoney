@@ -32,11 +32,5 @@ namespace GestMoney
             dgvRecibos.ItemsSource = dataTable.DefaultView;
 
         }
-
-        private void txtFiltroDesde_CalendarClosed(object sender, RoutedEventArgs e)
-        {
-            string aux;
-            aux = txtFiltroDesde.Text;
-        }
     }
 }
