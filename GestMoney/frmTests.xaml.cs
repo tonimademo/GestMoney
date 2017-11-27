@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using GestMoney.Clases;
+using GestMoney.Servicios;
 
 namespace GestMoney
 {
@@ -18,8 +19,8 @@ namespace GestMoney
 
         
         //defino result_test como la clave-valor de cada test y result como el diccionario que los engloba
-        private KeyValuePair<Boolean, string> result_test = new KeyValuePair<Boolean, string>();
-        private List<KeyValuePair<Boolean, string>>  result = new List<KeyValuePair<Boolean, string>>();
+        private KeyValuePair<bool, object> result_test = new KeyValuePair<bool, object>();
+        private List<KeyValuePair<bool, object>>  result = new List<KeyValuePair<bool, object>>();
 
         public frmTests()
         {
@@ -33,7 +34,7 @@ namespace GestMoney
             int cont = 0;
 
             //Muestro los resultados en el formulario, cmabiando la fuente segun sea error o no
-            foreach (KeyValuePair<Boolean, string> rst in result)
+            foreach (KeyValuePair<bool, object> rst in result)
             {
                 rango = new TextRange(txtInfo.Document.ContentEnd, txtInfo.Document.ContentEnd);
 
@@ -66,25 +67,25 @@ namespace GestMoney
 
             if (result_test.Key == true)
             {
-                result.Add(new KeyValuePair<Boolean, string>(true, "Delete Correcto"));
+                result.Add(new KeyValuePair<bool, object>(true, "Delete Correcto"));
             }
             else
             {
-                result.Add(new KeyValuePair<Boolean, string>(false, "Error al insertar recibos"));
+                result.Add(new KeyValuePair<bool, object>(false, "Error al insertar recibos"));
             }
 
             //Test 1: Insert de facturas correcto
             factura = new Factura();
             valores = new Dictionary<string, object>{ { "tipo", 1 }, { "importe", 53.00 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
-            result_test = factura.Insert(valores);
+            result_test = ServicioFactura.Insert(valores);
                
             if (result_test.Key ==true)
             {
-                result.Add(new KeyValuePair<Boolean, string> (true, "Insert Recibo Correcto"));
+                result.Add(new KeyValuePair<bool, object> (true, "Insert Recibo Correcto"));
             }
             else
             {
-                result.Add(new KeyValuePair<Boolean, string>(false, "Error al insertar recibos"));
+                result.Add(new KeyValuePair<bool, object>(false, "Error al insertar recibos"));
             }
 
             //Test 2: Insert de facturas erroneo (importe nulo)
@@ -94,11 +95,11 @@ namespace GestMoney
 
             if (result_test.Key == false && result_test.Value == "El importe no puede estar vacio")
             {
-                result.Add(new KeyValuePair<Boolean, string>(true, "Error de importe null Correcto"));
+                result.Add(new KeyValuePair<bool, object>(true, "Error de importe null Correcto"));
             }
             else
             {
-                result.Add(new KeyValuePair<Boolean, string>(false, "Error en comprobacion de importe"));
+                result.Add(new KeyValuePair<bool, object>(false, "Error en comprobacion de importe"));
             }
 
             //Test 3: Insert de facturas erroneo (tipo nulo)
@@ -108,11 +109,11 @@ namespace GestMoney
 
             if (result_test.Key == false && result_test.Value == "La factura debe tener un tipo valido")
             {
-                result.Add(new KeyValuePair<Boolean, string>(true, "Error de tipo no valido Correcto"));
+                result.Add(new KeyValuePair<bool, object>(true, "Error de tipo no valido Correcto"));
             }
             else
             {
-                result.Add(new KeyValuePair<Boolean, string>(false, "Error en comprobacion de tipo"));
+                result.Add(new KeyValuePair<bool, object>(false, "Error en comprobacion de tipo"));
             }
 
             //Test 4: Consulta de todas las facturas
@@ -120,11 +121,11 @@ namespace GestMoney
           
             if (factura.total.Count == 1)
             {
-                result.Add(new KeyValuePair<Boolean, string>(true, "Count = 1"));
+                result.Add(new KeyValuePair<bool, object>(true, "Count = 1"));
             }
             else
             {
-               result.Add(new KeyValuePair<Boolean, string>(false, "Error al consultar todas las facturas de la tabla"));
+               result.Add(new KeyValuePair<bool, object>(false, "Error al consultar todas las facturas de la tabla"));
             }
 
             //Test 5: Modificar consultas
@@ -135,11 +136,11 @@ namespace GestMoney
 
             if (result_test.Key == true)
             {
-                result.Add(new KeyValuePair<Boolean, string>(true, "Modificacion Correcta"));
+                result.Add(new KeyValuePair<bool, object>(true, "Modificacion Correcta"));
             }
             else
             {
-                result.Add(new KeyValuePair<Boolean, string>(false, "Error en la modificacion del recibo"));
+                result.Add(new KeyValuePair<bool, object>(false, "Error en la modificacion del recibo"));
             }
             //return new KeyValuePair<Boolean, string>(false, "Error al consultar la factura en la Base de Datos para los parametros: id= ");
 
