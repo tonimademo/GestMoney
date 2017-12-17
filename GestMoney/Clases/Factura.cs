@@ -16,7 +16,7 @@ namespace GestMoney.Clases
         public DateTime _fecha_importe;
         public DateTime _gc_fecha;
         public List<Dictionary<string, object>> total = new List<Dictionary<string, object>>();
-        public List<string> campos = new List<string> { "id", "tipo", "concepto", "fecha_importe" };
+        public List<string> campos = new List<string> { "_id", "_tipo", "_concepto", "_fecha_importe" };
 
         public Factura(){
         }
@@ -107,86 +107,48 @@ namespace GestMoney.Clases
             return result;
         }
 
-        public KeyValuePair<bool, string> Modify(Dictionary<string, object> condiciones, Dictionary<string, object> parametros)
+        public KeyValuePair<bool, string> Modify(string sql_condicion)
         {
 
             var result = new KeyValuePair<bool, string>();
-            string sql_condicion = " WHERE 1 = 1 ";
             string sql_update = "UPDATE dbo.Recibo set ";
             bool primer_update = true;
 
             try
             {
-
-                if (parametros == null || parametros.Count == 0)
+                var propertyInfo = GetType().GetProperty(campos(0));
+                if (propertyInfo == null) return;
+                propertyInfo.SetValue(obj, value);
+                
+                foreach (KeyValuePair<string, object> campo in campos)
                 {
-                    result = new KeyValuePair<bool, string>(false, "Error: No hay parametros para modificar");
-                }
-                else if (condiciones == null || condiciones.Count == 0)
-                {
-                    result = new KeyValuePair<bool, string>(false, "Error: No hay condiciones para modificar");
-                }
-                else
-                {
-                    //Compruebo las condiciones
-                    foreach (KeyValuePair<string, object> condicion in condiciones)
+                    sql_update += ((primer_update) ? "" : ", ") + parametro.Key;
+                    if (campo.Value.GetType() == typeof(string) && GetType().GetProperty(propertyName))
                     {
-                        if (campos.Any(item => item == condicion.Key))
-                        {
-                            sql_condicion += " AND " + condicion.Key;
-                            if (condicion.Value.GetType() == typeof(string))
-                            {
-                                sql_condicion += " = '" + condicion.Value + "'";
-                            }
-                            else
-                            {
-                                sql_condicion +=  " = " + condicion.Value;
-                            }
-                        
-                        }
-                        else
-                        {
-                            return new KeyValuePair<bool, string>(false, "Las condicion " + condicion.Key + " no es valida");
-                        }
-                    }
-
-                    //Compruebo los parametros
-                    //Realizo las comprobaciones antes de modificar
-                    if (parametros.ContainsKey("importe") && parametros["importe"] == null)
-                    {
-                        result = new KeyValuePair<bool, string>(false, "El importe no puede estar vacio");
-                    }
-                    else if (parametros.ContainsKey("tipo") && (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"]) == true))
-                    {
-                        result = new KeyValuePair<bool, string>(false, "La factura debe tener un tipo valido");
+                        sql_update += " = '" + parametro.Value + "'";
                     }
                     else
                     {
-                        foreach (KeyValuePair<string, object> parametro in parametros)
-                        {
-                            sql_update += ((primer_update) ? "" : ", ") + parametro.Key;
-                            if (parametro.Value.GetType() == typeof(string))
-                            {
-                                sql_update += " = '" + parametro.Value + "'";
-                            }
-                            else
-                            {
-                                sql_update +=  " = " + parametro.Value;
-                            }
-                            primer_update = false;
+                        sql_update +=  " = " + parametro.Value;
+
+                        var propertyInfo = GetType().GetProperty(propertyName);
+                        if (propertyInfo == null) return;
+                        propertyInfo.SetValue(obj, value);
 
 
-                        }
-                        //Preparo las variables por inyteccion
-                        using (var command = new SqlCommand(sql_update + sql_condicion))
-                        {
-                            command.Connection = SQLConecction.conn;
-                            command.ExecuteNonQuery();
-                        }
-                        
-                        result = new KeyValuePair<bool, string>(true, "");
                     }
+                    primer_update = false;
+                    
                 }
+                //Preparo las variables por inyeccion
+                using (var command = new SqlCommand(sql_update + sql_condicion))
+                {
+                    command.Connection = SQLConecction.conn;
+                    command.ExecuteNonQuery();
+                }
+                        
+                result = new KeyValuePair<bool, string>(true, "");
+               
                 return result;
             }
             catch (SqlException e)
