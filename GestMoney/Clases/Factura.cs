@@ -4,19 +4,29 @@ using System.Collections;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Data;
+using System.Reflection;
 
 namespace GestMoney.Clases
 {
     class Factura
     {
-        public int _id;
-        public string _tipo;
-        public string _concepto;
-        public decimal _importe;
-        public DateTime _fecha_importe;
-        public DateTime _gc_fecha;
+
+        private int id;
+        private string tipo;
+        private string concepto;
+        private decimal importe;
+        private DateTime fecha_importe;
+        private DateTime gc_fecha;
         public List<Dictionary<string, object>> total = new List<Dictionary<string, object>>();
-        public List<string> campos = new List<string> { "_id", "_tipo", "_concepto", "_fecha_importe" };
+        public Dictionary<string, string> campos = new Dictionary<string, string> { { "id", "Id" }, { "tipo", "Tipo" }, { "concepto", "Concepto" }, { "importe", "Importe" },
+            { "fecha_importe", "Fecha_Importe" }, { "gc_fecha", "Gc_Fecha" } };
+   
+        public int Id{get{return id;}}
+        public string Tipo { get { return tipo; } set { tipo = value; } }
+        public string Concepto { get { return concepto; } set { concepto = value;} }
+        public decimal Importe { get { return importe; } set { importe = value; } }
+        public DateTime Fecha_Importe { get { return fecha_importe; } set { fecha_importe = value; } }
+        public DateTime Gc_Fecha { get { return gc_fecha; } set { gc_fecha = value; } }
 
         public Factura(){
         }
@@ -39,11 +49,11 @@ namespace GestMoney.Clases
             {
                 if (reader.HasRows && id != 0)
                 {
-                    _id = (int) reader["id"];
-                    _tipo = (string) reader["id"];
-                    _concepto = (string) reader["id"];
-                    _fecha_importe = (DateTime) reader["id"];
-                    _gc_fecha = (DateTime) reader["id"];
+                    id = (int) reader["id"];
+                    tipo = (string) reader["id"];
+                    concepto = (string) reader["id"];
+                    fecha_importe = (DateTime) reader["id"];
+                    gc_fecha = (DateTime) reader["id"];
                     
                 }else if(reader.HasRows && id == 0)
                 {
@@ -73,10 +83,10 @@ namespace GestMoney.Clases
             {
                 command.Connection = SQLConecction.conn;
 
-                command.Parameters.Add("@tipo", SqlDbType.VarChar, 30).Value = _tipo;
-                command.Parameters.Add("@importe", SqlDbType.VarChar, 30).Value = _importe;
-                command.Parameters.Add("@concepto", SqlDbType.VarChar, 30).Value = _concepto;
-                command.Parameters.Add("@fecha_importe", SqlDbType.VarChar, 30).Value = _fecha_importe;
+                command.Parameters.Add("@tipo", SqlDbType.VarChar, 30).Value = tipo;
+                command.Parameters.Add("@importe", SqlDbType.VarChar, 30).Value = importe;
+                command.Parameters.Add("@concepto", SqlDbType.VarChar, 30).Value = concepto;
+                command.Parameters.Add("@fecha_importe", SqlDbType.VarChar, 30).Value = fecha_importe;
                 command.Parameters.Add("@ID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
 
             }
@@ -113,27 +123,37 @@ namespace GestMoney.Clases
             var result = new KeyValuePair<bool, string>();
             string sql_update = "UPDATE dbo.Recibo set ";
             bool primer_update = true;
+            PropertyInfo myPropInfo;
 
             try
             {
-                var propertyInfo = GetType().GetProperty(campos(0));
-                if (propertyInfo == null) return;
-                propertyInfo.SetValue(obj, value);
+                var obj = 0;
+                var value = 0;
+
+                Type myType = typeof(Factura);
+                // Get the PropertyInfo object by passing the property name.
+                //myPropInfo = myType.GetProperty(campos);
+                //var propertyInfo = Factura.GetType().GetProperty(campos[0]).GetValue(this, null);
+                //if (propertyInfo == null) return  new KeyValuePair<bool, string>(false, "Error en el parametro");
+                //propertyInfo.SetValue(obj, value);
                 
-                foreach (KeyValuePair<string, object> campo in campos)
+                foreach (KeyValuePair<string, string> campo in campos)
                 {
-                    sql_update += ((primer_update) ? "" : ", ") + parametro.Key;
-                    if (campo.Value.GetType() == typeof(string) && GetType().GetProperty(propertyName))
+                    sql_update += ((primer_update) ? "" : ", ") + campo;
+                    myPropInfo = myType.GetProperty(campo.Value);
+                    myPropInfo.SetValue(obj, value);
+
+                    if (campo.GetType() == typeof(string))
                     {
-                        sql_update += " = '" + parametro.Value + "'";
+                        sql_update += " = '" + obj + "'";
                     }
                     else
                     {
-                        sql_update +=  " = " + parametro.Value;
+                        sql_update +=  " = " + campo;
 
-                        var propertyInfo = GetType().GetProperty(propertyName);
-                        if (propertyInfo == null) return;
-                        propertyInfo.SetValue(obj, value);
+                       // var propertyInfo = GetType().GetProperty(propertyName);
+                       // if (propertyInfo == null) return;
+                       // propertyInfo.SetValue(obj, value);
 
 
                     }

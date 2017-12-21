@@ -61,18 +61,19 @@ namespace GestMoney
             Factura factura;
             Dictionary<string, object> valores;
             Dictionary<string, object> condiciones;
+            ServicioFactura sfactura;
             //Test 0: Limpiar la BD
             factura = new Factura();
-            result_test = factura.DeleteAll();
+            //result_test = factura.DeleteAll();
 
-            if (result_test.Key == true)
-            {
-                result.Add(new KeyValuePair<bool, object>(true, "Delete Correcto"));
-            }
-            else
-            {
-                result.Add(new KeyValuePair<bool, object>(false, "Error al insertar recibos"));
-            }
+            //if (result_test.Key == true)
+            //{
+            //    result.Add(new KeyValuePair<bool, object>(true, "Delete Correcto"));
+            //}
+            //else
+            //{
+            //    result.Add(new KeyValuePair<bool, object>(false, "Error al insertar recibos"));
+            //}
 
             //Test 1: Insert de facturas correcto
             factura = new Factura();
@@ -91,7 +92,7 @@ namespace GestMoney
             //Test 2: Insert de facturas erroneo (importe nulo)
             factura = new Factura();
             valores = new Dictionary<string, object> { { "tipo", 1 }, { "importe", null }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
-            result_test = factura.Insert(valores);
+            result_test = ServicioFactura.Insert(valores);
 
             if (result_test.Key == false && result_test.Value == "El importe no puede estar vacio")
             {
@@ -105,7 +106,7 @@ namespace GestMoney
             //Test 3: Insert de facturas erroneo (tipo nulo)
             factura = new Factura();
             valores = new Dictionary<string, object> { { "tipo", null }, { "importe", 19.23 }, { "concepto", "Test_1" }, { "fecha_importe", "20/10/2017" } };
-            result_test = factura.Insert(valores);
+            result_test = ServicioFactura.Insert(valores);
 
             if (result_test.Key == false && result_test.Value == "La factura debe tener un tipo valido")
             {
@@ -132,7 +133,7 @@ namespace GestMoney
             factura = new Factura();
             valores = new Dictionary<string, object> { { "importe", 100 }, { "concepto", "Modificacion_1" }, { "fecha_importe", "24/10/2017" } };
             condiciones = new Dictionary<string, object> { { "concepto", "Test_1" } };
-            result_test = factura.Modify(condiciones, valores);
+            result_test = ServicioFactura.Modify(condiciones, valores);
 
             if (result_test.Key == true)
             {

@@ -14,7 +14,7 @@ namespace GestMoney.Clases
 
         public void ConnectToSql(string database)
         {
-            conn.ConnectionString = "Data Source=TONIMA-PC\\SQLEXPRESS;Initial Catalog=" + database + ";Integrated Security=SSPI;";
+            conn.ConnectionString = "Data Source=DESKTOP-DCBRBGV;Initial Catalog=" + database + ";Integrated Security=SSPI;";
             try
             {
                 conn.Open();
