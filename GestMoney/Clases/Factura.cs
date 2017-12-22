@@ -16,22 +16,24 @@ namespace GestMoney.Clases
         private string concepto;
         private decimal importe;
         private DateTime fecha_importe;
-        private DateTime gc_fecha;
+        private DateTime gc_fecha_creacion;
+        private DateTime gc_fecha_modificacion;
         public List<Dictionary<string, object>> total = new List<Dictionary<string, object>>();
-        public Dictionary<string, string> campos = new Dictionary<string, string> { { "id", "Id" }, { "tipo", "Tipo" }, { "concepto", "Concepto" }, { "importe", "Importe" },
-            { "fecha_importe", "Fecha_Importe" }, { "gc_fecha", "Gc_Fecha" } };
-   
+        public List<string> campos = new List<string> { "Id", "Tipo", "Concepto", "Importe", "Fecha_Importe", "Gc_Fecha_Creacion", "Gc_Fecha_Creacion"  };
+
+
         public int Id{get{return id;}}
         public string Tipo { get { return tipo; } set { tipo = value; } }
         public string Concepto { get { return concepto; } set { concepto = value;} }
         public decimal Importe { get { return importe; } set { importe = value; } }
         public DateTime Fecha_Importe { get { return fecha_importe; } set { fecha_importe = value; } }
-        public DateTime Gc_Fecha { get { return gc_fecha; } set { gc_fecha = value; } }
+        public DateTime Gc_Fecha_Creacion { get { return gc_fecha_creacion; } set { gc_fecha_creacion = value; } }
+        public DateTime Gc_Fecha_Modificacion { get { return gc_fecha_creacion; } set { gc_fecha_creacion = value; } }
 
         public Factura(){
         }
 
-        public Factura(SQLConecction conection, int id = 0)
+        public Factura(int id)
         {
 
             SqlCommand command;
@@ -49,22 +51,27 @@ namespace GestMoney.Clases
             {
                 if (reader.HasRows && id != 0)
                 {
+                    //TODO: pasar a foreach generico para asignar atributos
                     id = (int) reader["id"];
-                    tipo = (string) reader["id"];
-                    concepto = (string) reader["id"];
-                    fecha_importe = (DateTime) reader["id"];
-                    gc_fecha = (DateTime) reader["id"];
-                    
-                }else if(reader.HasRows && id == 0)
+                    tipo = (string) reader["tipo"];
+                    concepto = (string) reader["concepto"];
+                    fecha_importe = (DateTime) reader["fecha_importe"];
+                    gc_fecha_creacion = (DateTime) reader["gc_fecha_creacion"];
+                    gc_fecha_modificacion = (DateTime)reader["gc_fecha_modificacion"];
+
+                }
+                else if(reader.HasRows && id == 0)
                 {
                     while (reader.Read())
                     {
+                        //TODO: pasar a foreach generico para asignar atributos
                         Dictionary<string, object> fila = new Dictionary<string, object>();
                         fila.Add("id", reader["id"]);
                         fila.Add("tipo", reader["tipo"]);
                         fila.Add("concepto", reader["concepto"]);
                         fila.Add("fecha_importe", reader["fecha_importe"]);
-                        fila.Add("gc_fecha", reader["gc_fecha"]);
+                        fila.Add("gc_fecha_creacion", reader["gc_fecha_creacion"]);
+                        fila.Add("gc_fecha_modificacion", reader["gc_fecha_modificacion"]);
                         total.Add(fila);
                     }
                     //reader.NextResult();
@@ -117,7 +124,7 @@ namespace GestMoney.Clases
             return result;
         }
 
-        public KeyValuePair<bool, string> Modify(string sql_condicion)
+        public KeyValuePair<bool, string> Modify(string sql_condicion, List<string> campos_cambiar)
         {
 
             var result = new KeyValuePair<bool, string>();
@@ -137,25 +144,18 @@ namespace GestMoney.Clases
                 //if (propertyInfo == null) return  new KeyValuePair<bool, string>(false, "Error en el parametro");
                 //propertyInfo.SetValue(obj, value);
                 
-                foreach (KeyValuePair<string, string> campo in campos)
+                foreach (string campo in campos_cambiar)
                 {
                     sql_update += ((primer_update) ? "" : ", ") + campo;
-                    myPropInfo = myType.GetProperty(campo.Value);
-                    myPropInfo.SetValue(obj, value);
-
-                    if (campo.GetType() == typeof(string))
+                    myPropInfo = myType.GetProperty(campo);
+                    
+                    if (myPropInfo.PropertyType == typeof(string) || myPropInfo.PropertyType == typeof(DateTime))
                     {
-                        sql_update += " = '" + obj + "'";
+                        sql_update += " = '" + myPropInfo.GetValue(this) + "'";
                     }
                     else
                     {
-                        sql_update +=  " = " + campo;
-
-                       // var propertyInfo = GetType().GetProperty(propertyName);
-                       // if (propertyInfo == null) return;
-                       // propertyInfo.SetValue(obj, value);
-
-
+                        sql_update +=  " = " + myPropInfo.GetValue(this);
                     }
                     primer_update = false;
                     

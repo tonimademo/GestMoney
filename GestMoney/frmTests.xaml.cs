@@ -118,7 +118,7 @@ namespace GestMoney
             }
 
             //Test 4: Consulta de todas las facturas
-            factura = new Factura();
+            factura = new Factura(0);
           
             if (factura.total.Count == 1)
             {
@@ -131,8 +131,8 @@ namespace GestMoney
 
             //Test 5: Modificar consultas
             factura = new Factura();
-            valores = new Dictionary<string, object> { { "importe", 100 }, { "concepto", "Modificacion_1" }, { "fecha_importe", "24/10/2017" } };
-            condiciones = new Dictionary<string, object> { { "concepto", "Test_1" } };
+            valores = new Dictionary<string, object> { { "Importe", 100 }, { "Concepto", "Modificacion_1" }, { "Fecha_Importe", "24/10/2017" } };
+            condiciones = new Dictionary<string, object> { { "Concepto", "Test_1" } };
             result_test = ServicioFactura.Modify(condiciones, valores);
 
             if (result_test.Key == true)

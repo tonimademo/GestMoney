@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -70,6 +71,10 @@ namespace GestMoney.Servicios
             var result = new KeyValuePair<bool, object>();
             string sql_condicion = " WHERE 1 = 1 ";
             bool primer_update = true;
+            List<string> campos_cambiar = new List<string>();
+            PropertyInfo myPropInfo;
+            Type myType = typeof(Factura);
+            object propertyVal;
 
             try
             {
@@ -87,7 +92,7 @@ namespace GestMoney.Servicios
                     //Compruebo las condiciones
                     foreach (KeyValuePair<string, object> condicion in condiciones)
                     {
-                        if (factura.campos.ContainsKey(condicion.Key))
+                        if (factura.campos.Contains(condicion.Key))
                         {
                             sql_condicion += " AND " + condicion.Key;
                             if (condicion.Value.GetType() == typeof(string))
@@ -118,21 +123,31 @@ namespace GestMoney.Servicios
                     }
                     else
                     {
-                        
-                        factura.Tipo = (parametros.ContainsKey("tipo"))?parametros["tipo"].ToString():null;
-                        factura.Concepto = (parametros.ContainsKey("concepto")) ? parametros["concepto"].ToString() : null;
-                        factura.Fecha_Importe = (parametros.ContainsKey("fecha_importe")) ? Convert.ToDateTime(parametros["fecha_importe"].ToString()) : default(DateTime);
-                        factura.Concepto = (parametros.ContainsKey("concepto")) ? parametros["concepto"].ToString() : null;
 
-                        var modificar = factura.Modify(sql_condicion);
-
+                        foreach (KeyValuePair<string, object> parametro in parametros)
+                        {
+                            if (factura.campos.Contains(parametro.Key))
+                            {
+                                // Obtengo el atributo de la clase
+                                myPropInfo = myType.GetProperty(parametro.Key);
+                                //Cambio el valor que paso como parametro al tipo del atributo (asi puedo aceptar un string para un decimal por ejemplo)
+                                propertyVal = Convert.ChangeType(parametro.Value, myPropInfo.PropertyType);
+                                //Actualizo el valor del atributo con el valor del parametro con su tipo
+                                myPropInfo.SetValue(factura, propertyVal, null);
+                                //Añado el nombre del atributo cambiado a la lista de atributos a actualizar
+                                campos_cambiar.Add(parametro.Key);
+                            }
+                        }
+                        //Modifico desde la clase
+                        var modificar = factura.Modify(sql_condicion, campos_cambiar);
+                        //Compruebo el resultado
                         if (modificar.Key)
                         {
-                            result = new KeyValuePair<bool, object>(false, factura);
+                            result = new KeyValuePair<bool, object>(true, factura);
                         }
                         else
                         {
-                            result = new KeyValuePair<bool, object>(true, factura);
+                            result = new KeyValuePair<bool, object>(false, factura);
                         }
                     }
                 }
