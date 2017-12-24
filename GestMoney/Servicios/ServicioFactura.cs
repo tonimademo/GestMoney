@@ -27,22 +27,24 @@ namespace GestMoney.Servicios
                 {
 
                     //Realizo las comprobaciones antes de insertar
+                    //Si el importe es nulo, al ser un campo obligatorio, error
                     if (parametros["importe"] == null)
                     {
                         result = new KeyValuePair<bool, object>(false, "El importe no puede estar vacio");
-                    }
+                    }//Si el tipo es nulo o no es uno valido, al ser un campo obligatorio, error
                     else if (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"]) == true)
                     {
                         result = new KeyValuePair<bool, object>(false, "La factura debe tener un tipo valido");
                     }
                     else
                     {
-
+                        //Asigno el valor de los parametros el objeto factura
                         factura.Tipo = (parametros.ContainsKey("tipo")) ? parametros["tipo"].ToString() : null;
                         factura.Importe = (parametros.ContainsKey("importe")) ? Convert.ToDecimal(parametros["importe"].ToString()) : default(decimal);
                         factura.Fecha_Importe = (parametros.ContainsKey("fecha_importe")) ? Convert.ToDateTime(parametros["fecha_importe"].ToString()) : default(DateTime);
                         factura.Concepto = (parametros.ContainsKey("concepto")) ? parametros["concepto"].ToString() : null;
 
+                        //Llamo la clase factura para que lo inserte en la BD
                         var id_result = factura.Insert();
 
                         if (id_result == "0")
@@ -78,11 +80,12 @@ namespace GestMoney.Servicios
 
             try
             {
-
+                //Si los parametro que paso para actualizar es nulo o no no hay ninguno, devuelvo error porque que voy a actualziar, pues nada
                 if (parametros == null || parametros.Count == 0)
                 {
                     result = new KeyValuePair<bool, object>(false, "Error: No hay parametros para modificar");
                 }
+                //Si no hay ninguna condicion pues devuelvo error por que el usuario no va a actualizar todo
                 else if (condiciones == null || condiciones.Count == 0)
                 {
                     result = new KeyValuePair<bool, object>(false, "Error: No hay condiciones para modificar");

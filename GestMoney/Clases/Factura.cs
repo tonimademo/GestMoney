@@ -138,21 +138,18 @@ namespace GestMoney.Clases
                 var value = 0;
 
                 Type myType = typeof(Factura);
-                // Get the PropertyInfo object by passing the property name.
-                //myPropInfo = myType.GetProperty(campos);
-                //var propertyInfo = Factura.GetType().GetProperty(campos[0]).GetValue(this, null);
-                //if (propertyInfo == null) return  new KeyValuePair<bool, string>(false, "Error en el parametro");
-                //propertyInfo.SetValue(obj, value);
-                
+             
+                //Preparo los campos que voy a actualizar en la sentencia de update
                 foreach (string campo in campos_cambiar)
                 {
                     sql_update += ((primer_update) ? "" : ", ") + campo;
                     myPropInfo = myType.GetProperty(campo);
                     
+                    //Si es un string o date, pongo compillas simples
                     if (myPropInfo.PropertyType == typeof(string) || myPropInfo.PropertyType == typeof(DateTime))
                     {
                         sql_update += " = '" + myPropInfo.GetValue(this) + "'";
-                    }
+                    }//Si no, no pongo nada
                     else
                     {
                         sql_update +=  " = " + myPropInfo.GetValue(this);
