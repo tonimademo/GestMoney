@@ -32,7 +32,7 @@ namespace GestMoney.Servicios
                     {
                         result = new KeyValuePair<bool, object>(false, "El importe no puede estar vacio");
                     }//Si el tipo es nulo o no es uno valido, al ser un campo obligatorio, error
-                    else if (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"]) == true)
+                    else if (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"]))
                     {
                         result = new KeyValuePair<bool, object>(false, "La factura debe tener un tipo valido");
                     }
@@ -120,7 +120,7 @@ namespace GestMoney.Servicios
                     {
                         result = new KeyValuePair<bool, object>(false, "El importe no puede estar vacio");
                     }
-                    else if (parametros.ContainsKey("tipo") && (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"]) == true))
+                    else if (parametros.ContainsKey("tipo") && (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"])))
                     {
                         result = new KeyValuePair<bool, object>(false, "La factura debe tener un tipo valido");
                     }
@@ -155,6 +155,35 @@ namespace GestMoney.Servicios
                     }
                 }
                 return result;
+            }
+            catch (Exception e)
+            {
+                return new KeyValuePair<bool, object>(false, "Error no controlado, Llame a un Administrador (" + e + ")");
+            }
+        }
+
+
+        static public KeyValuePair<bool, object> DeleteAll()
+        {
+            try
+            {
+                var result = new KeyValuePair<bool, string>();
+
+                if (Funciones.ExisteEnTabla("dbo.T_Users", "nivel = 1 and usuario = '" + Environment.UserName + "'"))
+                {
+                    Factura factura = new Factura();
+                    result = factura.DeleteAll();
+                    if (result.Key) {
+                        return new KeyValuePair<bool, object>(true, "");
+                    }
+                    else {
+                        return new KeyValuePair<bool, object>(false, result.Value);
+                    }                  
+                }
+                else
+                {
+                    return new KeyValuePair<bool, object>(false, "Error, El usuario no tiene permisos de administrador");
+                }
             }
             catch (Exception e)
             {

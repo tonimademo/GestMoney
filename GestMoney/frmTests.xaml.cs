@@ -64,16 +64,16 @@ namespace GestMoney
             ServicioFactura sfactura;
             //Test 0: Limpiar la BD
             factura = new Factura();
-            //result_test = factura.DeleteAll();
+            result_test = ServicioFactura.DeleteAll();
 
-            //if (result_test.Key == true)
-            //{
-            //    result.Add(new KeyValuePair<bool, object>(true, "Delete Correcto"));
-            //}
-            //else
-            //{
-            //    result.Add(new KeyValuePair<bool, object>(false, "Error al insertar recibos"));
-            //}
+            if (result_test.Key == true)
+            {
+                result.Add(new KeyValuePair<bool, object>(true, "Delete Correcto"));
+            }
+            else
+            {
+                result.Add(new KeyValuePair<bool, object>(false, "Error al insertar recibos"));
+            }
 
             //Test 1: Insert de facturas correcto
             factura = new Factura();

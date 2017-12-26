@@ -108,20 +108,26 @@ namespace GestMoney.Clases
 
             KeyValuePair<bool, string> result = new KeyValuePair<bool, string>();
             SqlCommand command;
-            
-            //Realizo las comprobaciones antes de insertar
-            command = new SqlCommand("DELETE FROM dbo.Recibo");
-            //Preparo las variables por inyteccion
-            using (command)
+            try
             {
-                command.Connection = SQLConecction.conn;
+                //Realizo las comprobaciones antes de insertar
+                command = new SqlCommand("DELETE FROM dbo.Recibo");
+                //Preparo las variables por inyteccion
+                using (command)
+                {
+                    command.Connection = SQLConecction.conn;
 
-            }
-            command.ExecuteNonQuery();
+                }
+                command.ExecuteNonQuery();
 
-            result = new KeyValuePair<Boolean, string>(true, "");
+                result = new KeyValuePair<Boolean, string>(true, "");
             
-            return result;
+                return result;
+            }
+            catch (SqlException e)
+            {
+                return new KeyValuePair<bool, string>(false, "Error en la llamada SQL, Llame a un Administrador (" + e + ")");
+            }
         }
 
         public KeyValuePair<bool, string> Modify(string sql_condicion, List<string> campos_cambiar)
