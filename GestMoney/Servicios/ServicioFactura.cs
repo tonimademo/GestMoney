@@ -1,6 +1,7 @@
 ﻿using GestMoney.Clases;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +12,9 @@ namespace GestMoney.Servicios
 {
     class ServicioFactura
     {
+        static private string vRecibos = "SELECT * FROM dbo.vRecibo";
+        static private SqlDataAdapter dataAdapter;
+        static private SqlCommandBuilder commandBuilder;
 
         static public KeyValuePair<bool, object> Insert(Dictionary<string, object> parametros)
         {
@@ -190,5 +194,24 @@ namespace GestMoney.Servicios
                 return new KeyValuePair<bool, object>(false, "Error no controlado, Llame a un Administrador (" + e + ")");
             }
         }
+
+        static public KeyValuePair<bool, object> vRecibosSelect(ref DataTable datafill, int id = 0)
+        {
+            try
+            {
+                SqlDataAdapter dataAdapter;
+
+                dataAdapter = (id == 0)? new SqlDataAdapter(vRecibos, SQLConecction.conn): new SqlDataAdapter(vRecibos + " where id = " + id, SQLConecction.conn);
+                
+                commandBuilder = new SqlCommandBuilder(dataAdapter);
+                dataAdapter.Fill(datafill);
+                return new KeyValuePair<bool, object>(true, "");
+            }
+            catch (Exception e)
+            {
+                return new KeyValuePair<bool, object>(false, "Error no controlado, Llame a un Administrador (" + e + ")");
+            }
+        }
+
     }
 }

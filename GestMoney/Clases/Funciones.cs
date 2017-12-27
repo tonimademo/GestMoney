@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace GestMoney.Clases
 {
@@ -33,6 +34,18 @@ namespace GestMoney.Clases
                 
             }catch (Exception e){
                 return false;
+            }
+        }
+
+        public static void ModificarFiltro(ref DataTable table, string filtro, string condicion, string quitar = "")
+        {
+            try
+            {
+               
+
+            }
+            catch (Exception e)
+            {
             }
         }
     }
