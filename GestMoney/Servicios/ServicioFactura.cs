@@ -199,12 +199,10 @@ namespace GestMoney.Servicios
         {
             try
             {
-                SqlDataAdapter dataAdapter;
-
                 dataAdapter = (id == 0)? new SqlDataAdapter(vRecibos, SQLConecction.conn): new SqlDataAdapter(vRecibos + " where id = " + id, SQLConecction.conn);
-                
-                commandBuilder = new SqlCommandBuilder(dataAdapter);
+                                
                 dataAdapter.Fill(datafill);
+                
                 return new KeyValuePair<bool, object>(true, "");
             }
             catch (Exception e)
