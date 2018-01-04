@@ -5,17 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GestMoney"
         mc:Ignorable="d"
-        Title="Inicio" Background="#FFEAE2BF" Height="383.077" Width="869.923" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
+        Title="Inicio" Background="#FFEAE2BF" Height="392.077" Width="1148.923" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
 
-    <Grid Height="269" Margin="6,61,6,0" VerticalAlignment="Top">
+    <Grid Height="346" Margin="6,7,6,0" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="64*"/>
             <RowDefinition Height="205*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="58*"/>
+            <ColumnDefinition Width="190*"/>
+            <ColumnDefinition Width="783*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dgvRecibos" Height="183" Margin="10,12,10,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False">
+        <DataGrid x:Name="dgvRecibos" Height="244" Margin="10,10,258,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=tipo}" ClipboardContentBinding="{x:Null}" Header="Tipo" Width="1*"/>
                 <DataGridTextColumn Binding="{Binding Path=importe}" ClipboardContentBinding="{x:Null}" Header="Importe" Width="2*"/>
@@ -24,11 +25,28 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <GroupBox Header="Filtrar" HorizontalAlignment="Left" Height="64" Margin="10,7,0,0" VerticalAlignment="Top" Width="832" Grid.RowSpan="2"/>
-        <Label Content="Desde:" HorizontalAlignment="Left" Margin="24,32,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="55"/>
-        <DatePicker x:Name="txtFiltroDesde" HorizontalAlignment="Left" Margin="70,34,0,0" VerticalAlignment="Top" Height="24" Width="113" SelectedDateChanged="txtFiltroDesde_SelectedDateChanged"/>
-        <Label Content="Hasta:" HorizontalAlignment="Left" Margin="200,32,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="43"/>
-        <DatePicker x:Name="txtFiltroHasta" HorizontalAlignment="Left" Margin="243,33,0,0" VerticalAlignment="Top" Height="24" Width="112" SelectedDateChanged="txtFiltroHasta_SelectedDateChanged"/>
+        <GroupBox Header="Filtrar" HorizontalAlignment="Left" Height="247" Margin="661,7,0,0" VerticalAlignment="Top" Width="243" Grid.Column="1" Grid.Row="1">
+            <Grid HorizontalAlignment="Left" Height="161" Margin="10,10,-2,0" VerticalAlignment="Top" Width="223">
+                <Label Content="Desde:" HorizontalAlignment="Left" Margin="50,11,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="48"/>
+                <DatePicker x:Name="txtFiltroDesde" HorizontalAlignment="Left" Margin="99,10,0,0" VerticalAlignment="Top" Height="24" Width="112" SelectedDateChanged="txtFiltroDesde_SelectedDateChanged" RenderTransformOrigin="0.5,0.5">
+                    <DatePicker.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-0.112"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </DatePicker.RenderTransform>
+                </DatePicker>
+                <Label Content="Hasta:" HorizontalAlignment="Left" Margin="51,40,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="43"/>
+                <DatePicker x:Name="txtFiltroHasta" HorizontalAlignment="Left" Margin="99,42,0,0" VerticalAlignment="Top" Height="24" Width="112" SelectedDateChanged="txtFiltroHasta_SelectedDateChanged"/>
+                <Label Content="Importe Menor:" HorizontalAlignment="Left" Margin="3,71,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="93"/>
+                <TextBox x:Name="txtImporteMenor" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="112" Margin="99,73,0,0" TextChanged="txtImporteMenor_TextChanged"/>
+                <TextBox x:Name="txtImporteMayor" HorizontalAlignment="Left" Height="23" Margin="99,101,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="112" TextChanged="txtImporteMayor_TextChanged"/>
+                <Label Content="Importe Mayor:" HorizontalAlignment="Left" Margin="5,97,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="93"/>
+            </Grid>
+
+        </GroupBox>
 
     </Grid>
 </Window>
