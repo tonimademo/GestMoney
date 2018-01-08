@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GestMoney"
         mc:Ignorable="d"
-        Title="Inicio" Background="#FFEAE2BF" Height="392.077" Width="1148.923" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
+        Title="Inicio" Background="#FFEAE2BF" Height="440.077" Width="1148.923" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
 
     <Grid Height="346" Margin="6,7,6,0" VerticalAlignment="Top">
         <Grid.RowDefinitions>
@@ -38,15 +38,16 @@
                         </TransformGroup>
                     </DatePicker.RenderTransform>
                 </DatePicker>
-                <Label Content="Hasta:" HorizontalAlignment="Left" Margin="51,40,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="43"/>
+                <Label Content="Hasta:" HorizontalAlignment="Left" Margin="51,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="43"/>
                 <DatePicker x:Name="txtFiltroHasta" HorizontalAlignment="Left" Margin="99,42,0,0" VerticalAlignment="Top" Height="24" Width="112" SelectedDateChanged="txtFiltroHasta_SelectedDateChanged"/>
                 <Label Content="Importe Menor:" HorizontalAlignment="Left" Margin="3,71,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="93"/>
-                <TextBox x:Name="txtImporteMenor" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="112" Margin="99,73,0,0" TextChanged="txtImporteMenor_TextChanged"/>
-                <TextBox x:Name="txtImporteMayor" HorizontalAlignment="Left" Height="23" Margin="99,101,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="112" TextChanged="txtImporteMayor_TextChanged"/>
+                <TextBox x:Name="txtImporteMenor" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" Margin="99,73,0,0" TextChanged="txtImporteMenor_TextChanged"/>
+                <TextBox x:Name="txtImporteMayor" HorizontalAlignment="Left" Height="23" Margin="99,101,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="86" TextChanged="txtImporteMayor_TextChanged"/>
                 <Label Content="Importe Mayor:" HorizontalAlignment="Left" Margin="5,97,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="93"/>
             </Grid>
 
         </GroupBox>
+        <Button x:Name="btnNuevo" Content="Nuevo" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="82" Height="27" Click="btnNuevo_Click"/>
 
     </Grid>
 </Window>

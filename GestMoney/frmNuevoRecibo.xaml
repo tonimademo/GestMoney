@@ -1,0 +1,24 @@
+﻿<Window x:Class="GestMoney.frmNuevoRecibo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GestMoney"
+        mc:Ignorable="d"
+        Title="frmNuevoRecibo" Height="347.605" Width="343.114" Background="#FFEAE2BF">
+    <Grid Margin="0,0,2,-1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="167*"/>
+            <ColumnDefinition Width="166*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="298" Margin="10,10,0,0" VerticalAlignment="Top" Width="313">
+            <TextBox x:Name="txtImporte" HorizontalAlignment="Left" Height="23" Margin="74,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="txtConcepto" HorizontalAlignment="Left" Height="77" Margin="10,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
+            <DatePicker HorizontalAlignment="Left" Margin="74,33,0,0" VerticalAlignment="Top"/>
+            <Label Content="Importe:" HorizontalAlignment="Left" Margin="12,71,0,0" VerticalAlignment="Top" Width="57"/>
+            <Label Content="Fecha:" HorizontalAlignment="Left" Margin="22,32,0,0" VerticalAlignment="Top" Width="47"/>
+            <Label Content="Concepto:" HorizontalAlignment="Left" Margin="12,113,0,0" VerticalAlignment="Top" Width="69"/>
+        </Grid>
+
+    </Grid>
+</Window>

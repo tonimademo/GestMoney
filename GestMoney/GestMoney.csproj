@@ -58,10 +58,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Clases\Funciones.cs" />
+    <Compile Include="frmNuevoRecibo.xaml.cs">
+      <DependentUpon>frmNuevoRecibo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="frmTests.xaml.cs">
       <DependentUpon>frmTests.xaml</DependentUpon>
     </Compile>
     <Compile Include="Servicios\ServicioFactura.cs" />
+    <Page Include="frmNuevoRecibo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Inicio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

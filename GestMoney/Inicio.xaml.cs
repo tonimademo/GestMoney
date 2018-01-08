@@ -64,9 +64,9 @@ namespace GestMoney
         private void txtImporteMayor_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             // Creo el filtro que aplica de cambiar el valor del campo
-            var filtro_local = (txtFiltroHasta.Text != "") ? string.Format(" AND importe >= '{0}'", txtFiltroHasta.Text) : "";
+            var filtro_local = (txtImporteMayor.Text != "") ? string.Format(" AND importe >= {0}", txtImporteMayor.Text) : "";
             // Defino la exp regular que quitara el filtro en caso de no tener valor en el campo
-            var regex = "[AND|OR]*\\s*importe\\s>=\\s[0-9]+,[0-9]+";
+            var regex = "[AND|OR]*\\s*importe\\s>=\\s[0-9]+[,|.]*[0-9]*";
 
             //Si he quitado el valor y lo dejo vacio, no tiene que aplicar el campo al filtro y lo tengo que quitar por lo que paso una exp reg para saber que quitar
             Funciones.ModificarFiltro(ref datafill, datafill.DefaultView.RowFilter, filtro_local, regex);
@@ -78,15 +78,20 @@ namespace GestMoney
         private void txtImporteMenor_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             // Creo el filtro que aplica de cambiar el valor del campo
-            var filtro_local = (txtFiltroHasta.Text != "") ? string.Format(" AND importe <= '{0}'", txtFiltroHasta.Text) : "";
+           var filtro_local = (txtImporteMenor.Text != "") ? string.Format(" AND importe <= {0}", txtImporteMenor.Text) : "";
             // Defino la exp regular que quitara el filtro en caso de no tener valor en el campo
-            var regex = "[AND|OR]*\\s*importe\\s<=\\s[0-9]+,[0-9]+";
+            var regex = "[AND|OR]*\\s*importe\\s<=\\s[0-9]+[,|.]*[0-9]*";
 
             //Si he quitado el valor y lo dejo vacio, no tiene que aplicar el campo al filtro y lo tengo que quitar por lo que paso una exp reg para saber que quitar
             Funciones.ModificarFiltro(ref datafill, datafill.DefaultView.RowFilter, filtro_local, regex);
 
             //Aplico el nuevo filtro
             dgvRecibos.ItemsSource = datafill.DefaultView;
+        }
+
+        private void btnNuevo_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
