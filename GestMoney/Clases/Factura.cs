@@ -81,6 +81,46 @@ namespace GestMoney.Clases
             
         }
 
+        public KeyValuePair<bool, Dictionary<string, object>>  Tipos()
+        {
+
+            SqlCommand command;
+            KeyValuePair<bool, object> result = new KeyValuePair<bool, object>();
+
+            try
+            {
+                command = new SqlCommand("Select * from dbo.T_Recibo", SQLConecction.conn);
+       
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        Dictionary<string, string> fila = new Dictionary<string, string>();
+                        while (reader.Read())
+                        {
+                            //TODO: pasar a foreach generico para asignar atributos
+                            fila.Add(reader["id"].ToString(), reader["nombre"].ToString());
+                            fila.Add("descripcion", reader["descripcion"]);
+                        }
+
+                        result = new KeyValuePair<bool, object>(true, fila);
+                    }
+                    else
+                    {
+                        result = new KeyValuePair<bool, object>(true, "");
+                    }
+                    reader.Close();
+                }
+
+                return result;
+            }
+            catch (SqlException e)
+            {
+                return new KeyValuePair<bool, object>(false, "Error en la llamada SQL, Llame a un Administrador (" + e + ")");
+            }
+
+        }
+
         public string Insert()
         {
     
@@ -120,7 +160,7 @@ namespace GestMoney.Clases
                 }
                 command.ExecuteNonQuery();
 
-                result = new KeyValuePair<Boolean, string>(true, "");
+                result = new KeyValuePair<bool, string>(true, "");
             
                 return result;
             }

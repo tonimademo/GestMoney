@@ -195,6 +195,30 @@ namespace GestMoney.Servicios
             }
         }
 
+        static public KeyValuePair<bool, Dictionary<string, object>> Tipos()
+        {
+            try
+            {
+                var result = new KeyValuePair<bool, Dictionary<string, object>>();
+                
+                Factura factura = new Factura();
+                result = factura.Tipos();
+                if (result.Key)
+                {
+                    return new KeyValuePair<bool, object>(true, "");
+                }
+                else
+                {
+                    return new KeyValuePair<bool, object>(false, result.Value);
+                }
+               
+            }
+            catch (Exception e)
+            {
+                return new KeyValuePair<bool, object>(false, "Error no controlado, Llame a un Administrador (" + e + ")");
+            }
+        }
+
         static public KeyValuePair<bool, object> vRecibosSelect(ref DataTable datafill, int id = 0)
         {
             try
