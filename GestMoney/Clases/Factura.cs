@@ -54,6 +54,7 @@ namespace GestMoney.Clases
                     //TODO: pasar a foreach generico para asignar atributos
                     id = (int) reader["id"];
                     tipo = (string) reader["tipo"];
+                    importe = (Decimal)reader["importe"];
                     concepto = (string) reader["concepto"];
                     fecha_importe = (DateTime) reader["fecha_importe"];
                     gc_fecha_creacion = (DateTime) reader["gc_fecha_creacion"];
@@ -68,6 +69,7 @@ namespace GestMoney.Clases
                         Dictionary<string, object> fila = new Dictionary<string, object>();
                         fila.Add("id", reader["id"]);
                         fila.Add("tipo", reader["tipo"]);
+                        fila.Add("importe", reader["importe"]);
                         fila.Add("concepto", reader["concepto"]);
                         fila.Add("fecha_importe", reader["fecha_importe"]);
                         fila.Add("gc_fecha_creacion", reader["gc_fecha_creacion"]);
@@ -81,11 +83,11 @@ namespace GestMoney.Clases
             
         }
 
-        public KeyValuePair<bool, Dictionary<string, object>>  Tipos()
+        public KeyValuePair<bool, Dictionary<int, List<string>>>  Tipos()
         {
 
             SqlCommand command;
-            KeyValuePair<bool, object> result = new KeyValuePair<bool, object>();
+            KeyValuePair<bool, Dictionary<int, List<string>>> result = new KeyValuePair<bool, Dictionary<int, List<string>>>();
 
             try
             {
@@ -93,21 +95,23 @@ namespace GestMoney.Clases
        
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
+                    Dictionary<int, List<string>> fila = new Dictionary<int, List<string>>();
                     if (reader.HasRows)
                     {
-                        Dictionary<string, string> fila = new Dictionary<string, string>();
+                        List<string> fila_datos = new List<string>();
                         while (reader.Read())
                         {
                             //TODO: pasar a foreach generico para asignar atributos
-                            fila.Add(reader["id"].ToString(), reader["nombre"].ToString());
-                            fila.Add("descripcion", reader["descripcion"]);
+                            fila_datos.Add(reader["nombre"].ToString());
+                            fila_datos.Add(reader["descripcion"].ToString());
+                            fila.Add(Convert.ToInt32(reader["id"]), fila_datos);
                         }
 
-                        result = new KeyValuePair<bool, object>(true, fila);
+                        result = new KeyValuePair<bool, Dictionary<int, List<string>>>(true, fila);
                     }
                     else
                     {
-                        result = new KeyValuePair<bool, object>(true, "");
+                        result = new KeyValuePair<bool, Dictionary<int, List<string>>>(true, fila);
                     }
                     reader.Close();
                 }
@@ -116,7 +120,7 @@ namespace GestMoney.Clases
             }
             catch (SqlException e)
             {
-                return new KeyValuePair<bool, object>(false, "Error en la llamada SQL, Llame a un Administrador (" + e + ")");
+                return new KeyValuePair<bool, Dictionary<int, List<string>>>(false, new Dictionary<int, List<string>>() { { 0, new List<string>() { "Error en la llamada SQL, Llame a un Administrador (" + e + ")" } } });
             }
 
         }
@@ -131,7 +135,7 @@ namespace GestMoney.Clases
                 command.Connection = SQLConecction.conn;
 
                 command.Parameters.Add("@tipo", SqlDbType.VarChar, 30).Value = tipo;
-                command.Parameters.Add("@importe", SqlDbType.VarChar, 30).Value = importe;
+                command.Parameters.Add("@importe", SqlDbType.Money).Value = importe;
                 command.Parameters.Add("@concepto", SqlDbType.VarChar, 30).Value = concepto;
                 command.Parameters.Add("@fecha_importe", SqlDbType.VarChar, 30).Value = fecha_importe;
                 command.Parameters.Add("@ID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;

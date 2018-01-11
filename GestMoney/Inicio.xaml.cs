@@ -91,7 +91,8 @@ namespace GestMoney
 
         private void btnNuevo_Click(object sender, RoutedEventArgs e)
         {
-
+            var frmNuevoR = new frmNuevoRecibo();
+            frmNuevoR.ShowDialog();
         }
     }
 }

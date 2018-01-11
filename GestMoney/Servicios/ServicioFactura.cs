@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -20,7 +21,7 @@ namespace GestMoney.Servicios
         {
             Factura factura = new Factura();
             KeyValuePair<bool, object> result;
-
+            decimal importe_local = 0;
             try
             {
                 if (parametros == null || parametros.Count == 0)
@@ -32,7 +33,7 @@ namespace GestMoney.Servicios
 
                     //Realizo las comprobaciones antes de insertar
                     //Si el importe es nulo, al ser un campo obligatorio, error
-                    if (parametros["importe"] == null)
+                    if (parametros["importe"] == null && Decimal.TryParse(parametros["importe"].ToString(), out importe_local) == false)
                     {
                         result = new KeyValuePair<bool, object>(false, "El importe no puede estar vacio");
                     }//Si el tipo es nulo o no es uno valido, al ser un campo obligatorio, error
@@ -44,7 +45,7 @@ namespace GestMoney.Servicios
                     {
                         //Asigno el valor de los parametros el objeto factura
                         factura.Tipo = (parametros.ContainsKey("tipo")) ? parametros["tipo"].ToString() : null;
-                        factura.Importe = (parametros.ContainsKey("importe")) ? Convert.ToDecimal(parametros["importe"].ToString()) : default(decimal);
+                        factura.Importe = (parametros.ContainsKey("importe")) ? Convert.ToDecimal(parametros["importe"], new CultureInfo("en-US")) : default(decimal);
                         factura.Fecha_Importe = (parametros.ContainsKey("fecha_importe")) ? Convert.ToDateTime(parametros["fecha_importe"].ToString()) : default(DateTime);
                         factura.Concepto = (parametros.ContainsKey("concepto")) ? parametros["concepto"].ToString() : null;
 
@@ -195,27 +196,21 @@ namespace GestMoney.Servicios
             }
         }
 
-        static public KeyValuePair<bool, Dictionary<string, object>> Tipos()
+        static public KeyValuePair<bool, Dictionary<int, List<string>>> Tipos()
         {
             try
             {
-                var result = new KeyValuePair<bool, Dictionary<string, object>>();
+                var result = new KeyValuePair<bool, Dictionary<int, List<string>>>();
                 
                 Factura factura = new Factura();
                 result = factura.Tipos();
-                if (result.Key)
-                {
-                    return new KeyValuePair<bool, object>(true, "");
-                }
-                else
-                {
-                    return new KeyValuePair<bool, object>(false, result.Value);
-                }
-               
+                return new KeyValuePair<bool, Dictionary<int, List<string>>>(result.Key, result.Value);
+                
             }
             catch (Exception e)
             {
-                return new KeyValuePair<bool, object>(false, "Error no controlado, Llame a un Administrador (" + e + ")");
+                return new KeyValuePair<bool, Dictionary<int, List<string>>>(false, new Dictionary<int, List<string>>() { { 0, new List<string>() { "Error no controlado, Llame a un Administrador (" + e + ")" } } });
+                    
             }
         }
 

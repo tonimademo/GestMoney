@@ -65,4 +65,20 @@ namespace GestMoney.Clases
             }
         }
     }
+
+    public class ComboItem
+    {
+        public string Texto { get; set; }
+        public object Valor { get; set; }
+
+        public ComboItem(string name, int value)
+        {
+            Texto = name; Valor = value;
+        }
+
+        public override string ToString()
+        {
+            return Texto;
+        }
+    }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GestMoney"
         mc:Ignorable="d"
-        Title="Inicio" Background="#FFEAE2BF" Height="440.077" Width="1148.923" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
+        Title="Inicio" Background="#FFEAE2BF" Height="440.077" Width="1146.923" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
 
     <Grid Height="346" Margin="6,7,6,0" VerticalAlignment="Top">
         <Grid.RowDefinitions>
@@ -16,7 +16,7 @@
             <ColumnDefinition Width="190*"/>
             <ColumnDefinition Width="783*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dgvRecibos" Height="244" Margin="10,10,258,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+        <DataGrid x:Name="dgvRecibos" Height="244" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="857">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=tipo}" ClipboardContentBinding="{x:Null}" Header="Tipo" Width="1*"/>
                 <DataGridTextColumn Binding="{Binding Path=importe}" ClipboardContentBinding="{x:Null}" Header="Importe" Width="2*"/>
@@ -25,7 +25,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <GroupBox Header="Filtrar" HorizontalAlignment="Left" Height="247" Margin="661,7,0,0" VerticalAlignment="Top" Width="243" Grid.Column="1" Grid.Row="1">
+        <GroupBox Header="Filtrar" Height="247" Margin="654,7,10,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
             <Grid HorizontalAlignment="Left" Height="161" Margin="10,10,-2,0" VerticalAlignment="Top" Width="223">
                 <Label Content="Desde:" HorizontalAlignment="Left" Margin="50,11,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="48"/>
                 <DatePicker x:Name="txtFiltroDesde" HorizontalAlignment="Left" Margin="99,10,0,0" VerticalAlignment="Top" Height="24" Width="112" SelectedDateChanged="txtFiltroDesde_SelectedDateChanged" RenderTransformOrigin="0.5,0.5">

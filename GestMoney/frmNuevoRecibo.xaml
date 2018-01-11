@@ -14,12 +14,14 @@
         <Grid Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="298" Margin="10,10,0,0" VerticalAlignment="Top" Width="313">
             <TextBox x:Name="txtImporte" HorizontalAlignment="Left" Height="23" Margin="82,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
             <TextBox x:Name="txtConcepto" HorizontalAlignment="Left" Height="77" Margin="10,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="293"/>
-            <DatePicker HorizontalAlignment="Left" Margin="82,54,0,0" VerticalAlignment="Top"/>
+            <DatePicker x:Name="txtFechaRecibo" HorizontalAlignment="Left" Margin="82,54,0,0" VerticalAlignment="Top"/>
             <Label Content="Importe:" HorizontalAlignment="Left" Margin="20,86,0,0" VerticalAlignment="Top" Width="57"/>
             <Label Content="Fecha:" HorizontalAlignment="Left" Margin="30,53,0,0" VerticalAlignment="Top" Width="47"/>
             <Label Content="Concepto:" HorizontalAlignment="Left" Margin="12,116,0,0" VerticalAlignment="Top" Width="69"/>
             <ComboBox x:Name="cbTipoRecibo" HorizontalAlignment="Left" Margin="82,20,0,0" VerticalAlignment="Top" Width="120"/>
             <Label Content="Tipo:" HorizontalAlignment="Left" Margin="38,18,0,0" VerticalAlignment="Top" Width="36"/>
+            <Button x:Name="btnAceptar" Content="Aceptar" HorizontalAlignment="Left" Margin="57,255,0,0" VerticalAlignment="Top" Width="75" Click="btnAceptar_Click"/>
+            <Button x:Name="btnCancelar" Content="Cancelar" HorizontalAlignment="Left" Margin="181,255,0,0" VerticalAlignment="Top" Width="75" Click="btnCancelar_Click"/>
         </Grid>
 
     </Grid>
