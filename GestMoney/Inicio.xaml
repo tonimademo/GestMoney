@@ -16,15 +16,29 @@
             <ColumnDefinition Width="190*"/>
             <ColumnDefinition Width="783*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dgvRecibos" Height="244" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="857">
+        <DataGrid x:Name="dgvRecibos" Height="244" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" 
+                  CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="857" ItemsSource="{Binding Datafill}">
+
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=tipo}" ClipboardContentBinding="{x:Null}" Header="Tipo" Width="1*"/>
                 <DataGridTextColumn Binding="{Binding Path=importe}" ClipboardContentBinding="{x:Null}" Header="Importe" Width="2*"/>
                 <DataGridTextColumn Binding="{Binding Path=concepto}" ClipboardContentBinding="{x:Null}" Header="Concepto" Width="3*"/>
                 <DataGridTextColumn Binding="{Binding Path=fecha_importe}" ClipboardContentBinding="{x:Null}" Header="Fecha De Importe" Width="2*"/>
+                
             </DataGrid.Columns>
+            <!--
+            <Style TargetType="DataGridRow">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ColorRow}" Value="Success">
+                        <Setter Property="Background" Value="Green" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ColorRow}" Value="Error">
+                        <Setter Property="Background" Value="Red" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>-->
         </DataGrid>
-
+        
         <GroupBox Header="Filtrar" Height="247" Margin="654,7,10,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
             <Grid HorizontalAlignment="Left" Height="161" Margin="10,10,-2,0" VerticalAlignment="Top" Width="223">
                 <Label Content="Desde:" HorizontalAlignment="Left" Margin="50,11,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="48"/>
