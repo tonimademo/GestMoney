@@ -7,7 +7,10 @@
         mc:Ignorable="d"
         Title="Inicio" Background="#FFEAE2BF" Height="440.077" Width="1146.923" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
 
+
     <Grid Height="346" Margin="6,7,6,0" VerticalAlignment="Top">
+        
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="64*"/>
             <RowDefinition Height="205*"/>
