@@ -18,45 +18,58 @@ namespace GestMoney
 
     public partial class MainWindow : Window
     {
+        #region Bindings
         private DataTable _datafill = new DataTable();
         public DataView Datafill
         {
-            
-        get {
-                if (ServicioFactura.vRecibosSelect(ref _datafill).Key)
+            get {
+                    if (ServicioFactura.vRecibosSelect(ref _datafill).Key)
+                    {
+                        return _datafill.DefaultView;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                
+                    }
+            set {
+                    _datafill = value.Table;
+                }
+        }
+        
+        private string _saldoTotal;
+        public string SaldoTotal
+        {
+            get
+            {
+                KeyValuePair<bool, string> saldo = Funciones.ProcSaldoTotal();
+                if (saldo.Key)
                 {
-                    return _datafill.DefaultView;
+                    _saldoTotal = saldo.Value;
+                    return _saldoTotal;
                 }
                 else
                 {
                     return null;
                 }
-                
-                }
-        set {
-                _datafill = value.Table;
+
+            }
+            set
+            {
+                _saldoTotal = value;
             }
         }
-        
 
-        public  MainWindow()
+        #endregion
+        public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
-
         }
 
         private void Inicio_Loaded(object sender, RoutedEventArgs e)
         {
-            //var data = ServicioFactura.vRecibosSelect(ref datafill);
-
-            //if (ServicioFactura.vRecibosSelect(ref datafill).Key)
-            //{
-            //    datafill.DefaultView.RowFilter = "1=1";
-            //    dgvRecibos.ItemsSource = datafill.DefaultView;
-            //    //ColorRows();
-
-            //}
             _datafill.DefaultView.RowFilter = "1=1";
         }
         
@@ -71,8 +84,8 @@ namespace GestMoney
             //Si he quitado el valor y lo dejo vacio, no tiene que aplicar el campo al filtro y lo tengo que quitar por lo que paso una exp reg para saber que quitar
             Funciones.ModificarFiltro(ref _datafill, _datafill.DefaultView.RowFilter, filtro_local, regex);
 
+            //TODO: Modifico _datafill en MODIFICARFILTRO y tengo que volver a asignarle el mismo valor a traves de Datafill para que se aplique el cambio en el datagrid del xaml.... no me gusta tener que asignar 2 veces lo mismo, hay que cambiarlo para pasarle directamente DataFill
             //Aplico el nuevo filtro
-            //dgvRecibos.ItemsSource = datafill.DefaultView;
             Datafill = _datafill.DefaultView;
         }
 
@@ -86,8 +99,8 @@ namespace GestMoney
             //Si he quitado el valor y lo dejo vacio, no tiene que aplicar el campo al filtro y lo tengo que quitar por lo que paso una exp reg para saber que quitar
             Funciones.ModificarFiltro(ref _datafill, _datafill.DefaultView.RowFilter, filtro_local, regex);
 
+            //TODO: Modifico _datafill en MODIFICARFILTRO y tengo que volver a asignarle el mismo valor a traves de Datafill para que se aplique el cambio en el datagrid del xaml.... no me gusta tener que asignar 2 veces lo mismo, hay que cambiarlo para pasarle directamente DataFill
             //Aplico el nuevo filtro
-            //dgvRecibos.ItemsSource = datafill.DefaultView;
             Datafill = _datafill.DefaultView;
         }
         
@@ -101,8 +114,9 @@ namespace GestMoney
             //Si he quitado el valor y lo dejo vacio, no tiene que aplicar el campo al filtro y lo tengo que quitar por lo que paso una exp reg para saber que quitar
             Funciones.ModificarFiltro(ref _datafill, _datafill.DefaultView.RowFilter, filtro_local, regex);
 
+            //TODO: Modifico _datafill en MODIFICARFILTRO y tengo que volver a asignarle el mismo valor a traves de Datafill para que se aplique el cambio en el datagrid del xaml.... no me gusta tener que asignar 2 veces lo mismo, hay que cambiarlo para pasarle directamente DataFill
             //Aplico el nuevo filtro
-            //dgvRecibos.ItemsSource = datafill.DefaultView;
+            Datafill = _datafill.DefaultView;
         }
 
         private void txtImporteMenor_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -115,8 +129,9 @@ namespace GestMoney
             //Si he quitado el valor y lo dejo vacio, no tiene que aplicar el campo al filtro y lo tengo que quitar por lo que paso una exp reg para saber que quitar
             Funciones.ModificarFiltro(ref _datafill, _datafill.DefaultView.RowFilter, filtro_local, regex);
 
+            //TODO: Modifico _datafill en MODIFICARFILTRO y tengo que volver a asignarle el mismo valor a traves de Datafill para que se aplique el cambio en el datagrid del xaml.... no me gusta tener que asignar 2 veces lo mismo, hay que cambiarlo para pasarle directamente DataFill
             //Aplico el nuevo filtro
-            //dgvRecibos.ItemsSource = datafill.DefaultView;
+            Datafill = _datafill.DefaultView;
         }
 
         private void btnNuevo_Click(object sender, RoutedEventArgs e)

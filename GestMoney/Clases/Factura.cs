@@ -98,9 +98,9 @@ namespace GestMoney.Clases
                     Dictionary<int, List<string>> fila = new Dictionary<int, List<string>>();
                     if (reader.HasRows)
                     {
-                        List<string> fila_datos = new List<string>();
                         while (reader.Read())
                         {
+                            List<string> fila_datos = new List<string>();
                             //TODO: pasar a foreach generico para asignar atributos
                             fila_datos.Add(reader["nombre"].ToString());
                             fila_datos.Add(reader["descripcion"].ToString());

@@ -9,8 +9,8 @@
 
 
     <Grid Height="346" Margin="6,7,6,0" VerticalAlignment="Top">
-        
-        
+
+
         <Grid.RowDefinitions>
             <RowDefinition Height="64*"/>
             <RowDefinition Height="205*"/>
@@ -26,22 +26,24 @@
                 <DataGridTextColumn Binding="{Binding Path=tipo}" ClipboardContentBinding="{x:Null}" Header="Tipo" Width="1*"/>
                 <DataGridTextColumn Binding="{Binding Path=importe}" ClipboardContentBinding="{x:Null}" Header="Importe" Width="2*"/>
                 <DataGridTextColumn Binding="{Binding Path=concepto}" ClipboardContentBinding="{x:Null}" Header="Concepto" Width="3*"/>
-                <DataGridTextColumn Binding="{Binding Path=fecha_importe}" ClipboardContentBinding="{x:Null}" Header="Fecha De Importe" Width="2*"/>
-                
+                <DataGridTextColumn Binding="{Binding Path=fecha_importe, StringFormat=\{0:dd/MM/yyyy\}}" ClipboardContentBinding="{x:Null}" Header="Fecha De Importe" Width="2*"/>
+
             </DataGrid.Columns>
-            <!--
-            <Style TargetType="DataGridRow">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding ColorRow}" Value="Success">
-                        <Setter Property="Background" Value="Green" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding ColorRow}" Value="Error">
-                        <Setter Property="Background" Value="Red" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>-->
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=tipo}" Value="Ingreso">
+                            <Setter Property="Background" Value="#FF6ACB6A" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=tipo}" Value="Factura">
+                            <Setter Property="Background" Value="#FFBB4C4C" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
-        
+
+
         <GroupBox Header="Filtrar" Height="247" Margin="654,7,10,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
             <Grid HorizontalAlignment="Left" Height="161" Margin="10,10,-2,0" VerticalAlignment="Top" Width="223">
                 <Label Content="Desde:" HorizontalAlignment="Left" Margin="50,11,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="48"/>
@@ -65,6 +67,8 @@
 
         </GroupBox>
         <Button x:Name="btnNuevo" Content="Nuevo" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="82" Height="27" Click="btnNuevo_Click"/>
+        <Label Content="Saldo Total:" HorizontalAlignment="Left" Height="34" Margin="10,274,0,-44" Grid.Row="1" VerticalAlignment="Top" Width="95" FontSize="16"/>
+        <Label x:Name="lblSaldoTotal" Content="{Binding SaldoTotal}" HorizontalAlignment="Left" Height="34" Margin="110,274,0,-44" Grid.Row="1" VerticalAlignment="Top" Width="153" FontSize="16" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>
