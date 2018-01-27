@@ -78,7 +78,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clases\SQLConecction.cs" />
+    <Compile Include="Clases\SQLConection.cs" />
     <Compile Include="Clases\Factura.cs" />
     <Compile Include="Inicio.xaml.cs">
       <DependentUpon>Inicio.xaml</DependentUpon>

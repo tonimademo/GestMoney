@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GestMoney"
         mc:Ignorable="d"
-        Title="Inicio" Background="#FFEAE2BF" Height="440.077" Width="1146.923" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
+        Title="Inicio" Background="#FFEAE2BF" Height="657" Width="1444" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
 
 
     <Grid Height="346" Margin="6,7,6,0" VerticalAlignment="Top">
@@ -19,8 +19,8 @@
             <ColumnDefinition Width="190*"/>
             <ColumnDefinition Width="783*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dgvRecibos" Height="244" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" 
-                  CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="857" ItemsSource="{Binding Datafill}">
+        <DataGrid x:Name="dgvRecibos" Height="379" Margin="24,41,0,-156" VerticalAlignment="Top" Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" 
+                  CanUserReorderColumns="False" IsReadOnly="True" ColumnWidth="Auto" AutoGenerateColumns="False" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="1380" ItemsSource="{Binding Datafill}">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=tipo}" ClipboardContentBinding="{x:Null}" Header="Tipo" Width="1*"/>
@@ -44,10 +44,10 @@
         </DataGrid>
 
 
-        <GroupBox Header="Filtrar" Height="247" Margin="654,7,10,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
-            <Grid HorizontalAlignment="Left" Height="161" Margin="10,10,-2,0" VerticalAlignment="Top" Width="223">
-                <Label Content="Desde:" HorizontalAlignment="Left" Margin="50,11,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="48"/>
-                <DatePicker x:Name="txtFiltroDesde" HorizontalAlignment="Left" Margin="99,10,0,0" VerticalAlignment="Top" Height="24" Width="112" SelectedDateChanged="txtFiltroDesde_SelectedDateChanged" RenderTransformOrigin="0.5,0.5">
+        <GroupBox Header="Filtrar" Height="67" Margin="24,51,22,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Grid HorizontalAlignment="Left" Height="37" Margin="10,2,0,0" VerticalAlignment="Top" Width="734">
+                <Label Content="Desde:" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="48"/>
+                <DatePicker x:Name="txtFiltroDesde" HorizontalAlignment="Left" Margin="59,8,0,0" VerticalAlignment="Top" Height="24" Width="112" SelectedDateChanged="txtFiltroDesde_SelectedDateChanged" RenderTransformOrigin="0.5,0.5">
                     <DatePicker.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -57,18 +57,18 @@
                         </TransformGroup>
                     </DatePicker.RenderTransform>
                 </DatePicker>
-                <Label Content="Hasta:" HorizontalAlignment="Left" Margin="51,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="43"/>
-                <DatePicker x:Name="txtFiltroHasta" HorizontalAlignment="Left" Margin="99,42,0,0" VerticalAlignment="Top" Height="24" Width="112" SelectedDateChanged="txtFiltroHasta_SelectedDateChanged"/>
-                <Label Content="Importe Menor:" HorizontalAlignment="Left" Margin="3,71,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="93"/>
-                <TextBox x:Name="txtImporteMenor" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" Margin="99,73,0,0" TextChanged="txtImporteMenor_TextChanged"/>
-                <TextBox x:Name="txtImporteMayor" HorizontalAlignment="Left" Height="23" Margin="99,101,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="86" TextChanged="txtImporteMayor_TextChanged"/>
-                <Label Content="Importe Mayor:" HorizontalAlignment="Left" Margin="5,97,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="93"/>
+                <Label Content="Hasta:" HorizontalAlignment="Left" Margin="182,7,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="43"/>
+                <DatePicker x:Name="txtFiltroHasta" HorizontalAlignment="Left" Margin="229,9,0,0" VerticalAlignment="Top" Height="24" Width="112" SelectedDateChanged="txtFiltroHasta_SelectedDateChanged"/>
+                <Label Content="Importe Menor:" HorizontalAlignment="Left" Margin="349,8,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="93"/>
+                <TextBox x:Name="txtImporteMenor" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" Margin="445,10,0,0" TextChanged="txtImporteMenor_TextChanged"/>
+                <TextBox x:Name="txtImporteMayor" HorizontalAlignment="Left" Height="23" Margin="632,10,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="87" TextChanged="txtImporteMayor_TextChanged"/>
+                <Label Content="Importe Mayor:" HorizontalAlignment="Left" Margin="536,7,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.599,0.641" Height="26" Width="93"/>
             </Grid>
 
         </GroupBox>
-        <Button x:Name="btnNuevo" Content="Nuevo" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="82" Height="27" Click="btnNuevo_Click"/>
-        <Label Content="Saldo Total:" HorizontalAlignment="Left" Height="34" Margin="10,274,0,-44" Grid.Row="1" VerticalAlignment="Top" Width="95" FontSize="16"/>
-        <Label x:Name="lblSaldoTotal" Content="{Binding SaldoTotal}" HorizontalAlignment="Left" Height="34" Margin="110,274,0,-44" Grid.Row="1" VerticalAlignment="Top" Width="153" FontSize="16" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnNuevo" Content="Nuevo" HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top" Width="82" Height="27" Click="btnNuevo_Click"/>
+        <Label Content="Saldo Total:" HorizontalAlignment="Left" Height="34" Margin="24,425,0,-195" Grid.Row="1" VerticalAlignment="Top" Width="95" FontSize="16"/>
+        <Label x:Name="lblSaldoTotal" Content="{Binding SaldoTotal}" HorizontalAlignment="Left" Height="34" Margin="124,425,0,-195" Grid.Row="1" VerticalAlignment="Top" Width="153" FontSize="16"/>
 
     </Grid>
 </Window>

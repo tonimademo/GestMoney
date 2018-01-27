@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text.RegularExpressions;
@@ -11,39 +8,11 @@ namespace GestMoney.Clases
 {
     class Funciones
     {
-        public static bool ExisteEnTabla(string tabla, string condicion)
-        {
-            SqlCommand command;
-            bool result;
-
-            try
-            {
-                command = new SqlCommand("select id from " + tabla + " where " + condicion, SQLConecction.conn);
-
-                SqlDataReader reader = command.ExecuteReader();
-                
-                if (reader.HasRows)
-                {
-                    result = true;
-                }
-                else
-                {
-                    result = false;
-                }
-                reader.Close();
-                return result;
-                
-            }catch (Exception e){
-                return false;
-            }
-        }
-
+        
         public static void ModificarFiltro(ref DataTable table, string filtro, string condicion, string regex)
         {
-            
             try
             {
-                
                 MatchCollection matches = Regex.Matches(filtro, regex, RegexOptions.IgnorePatternWhitespace);
          
                 if (matches.Count > 0)
@@ -55,8 +24,7 @@ namespace GestMoney.Clases
                 {
                     filtro += condicion;
                 }
-
-
+                
                 table.DefaultView.RowFilter = filtro;
 
             }
@@ -69,8 +37,9 @@ namespace GestMoney.Clases
         {
             try
             {
-                using (SqlCommand command = new SqlCommand("dbo.SaldoTotal", SQLConecction.conn))
+                using (SqlConnection connection = new SqlConnection(SQLConection.ConnectionString))
                 {
+                    SqlCommand command = new SqlCommand("dbo.SaldoTotal", connection);
                     command.CommandType = CommandType.StoredProcedure;
                     
                     SqlParameter proc_result = new SqlParameter("@Result", SqlDbType.Decimal);
@@ -78,6 +47,7 @@ namespace GestMoney.Clases
                     
 
                     command.Parameters.Add(proc_result);
+                    connection.Open();
                     command.ExecuteNonQuery();
 
                     if (proc_result.Value != DBNull.Value) {

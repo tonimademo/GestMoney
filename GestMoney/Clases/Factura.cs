@@ -35,18 +35,18 @@ namespace GestMoney.Clases
 
         public Factura(int id)
         {
-
+            SqlConnection connection = new SqlConnection(SQLConection.ConnectionString);
             SqlCommand command;
             if (id == 0)
             {
-                command = new SqlCommand("Select * from dbo.Recibo", SQLConecction.conn);
+                command = new SqlCommand("Select * from dbo.Recibo", connection);
             }
             else
             {
-                command = new SqlCommand("Select * from dbo.Recibo where id = " + id, SQLConecction.conn);
+                command = new SqlCommand("Select * from dbo.Recibo where id = " + id, connection);
             }
-            
-            
+
+            connection.Open();
             using (SqlDataReader reader = command.ExecuteReader())
             {
                 if (reader.HasRows && id != 0)
@@ -85,14 +85,14 @@ namespace GestMoney.Clases
 
         public KeyValuePair<bool, Dictionary<int, List<string>>>  Tipos()
         {
-
+            SqlConnection connection = new SqlConnection(SQLConection.ConnectionString);
             SqlCommand command;
             KeyValuePair<bool, Dictionary<int, List<string>>> result = new KeyValuePair<bool, Dictionary<int, List<string>>>();
 
             try
             {
-                command = new SqlCommand("Select * from dbo.T_Recibo", SQLConecction.conn);
-       
+                command = new SqlCommand("Select * from dbo.T_Recibo", connection);
+                connection.Open();
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     Dictionary<int, List<string>> fila = new Dictionary<int, List<string>>();
@@ -127,12 +127,11 @@ namespace GestMoney.Clases
 
         public string Insert()
         {
-    
             var command = new SqlCommand("insert into dbo.Recibo (tipo, importe, concepto, fecha_importe) values (@tipo, @importe, @concepto, @fecha_importe)");
             //Preparo las variables por inyteccion
             using (command)
             {
-                command.Connection = SQLConecction.conn;
+                command.Connection = new SqlConnection(SQLConection.ConnectionString);
 
                 command.Parameters.Add("@tipo", SqlDbType.VarChar, 30).Value = tipo;
                 command.Parameters.Add("@importe", SqlDbType.Money).Value = importe;
@@ -140,30 +139,28 @@ namespace GestMoney.Clases
                 command.Parameters.Add("@fecha_importe", SqlDbType.VarChar, 30).Value = fecha_importe;
                 command.Parameters.Add("@ID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
 
-            }
-            command.ExecuteNonQuery();
             
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
             return command.Parameters["@ID"].Value.ToString();
-
         }
 
         public KeyValuePair<bool, string> DeleteAll()
         {
 
             KeyValuePair<bool, string> result = new KeyValuePair<bool, string>();
-            SqlCommand command;
             try
             {
                 //Realizo las comprobaciones antes de insertar
-                command = new SqlCommand("DELETE FROM dbo.Recibo");
                 //Preparo las variables por inyteccion
-                using (command)
+                using (SqlCommand command = new SqlCommand("DELETE FROM dbo.Recibo"))
                 {
-                    command.Connection = SQLConecction.conn;
-
+                    command.Connection = new SqlConnection(SQLConection.ConnectionString);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
                 }
-                command.ExecuteNonQuery();
-
+                
                 result = new KeyValuePair<bool, string>(true, "");
             
                 return result;
@@ -176,7 +173,6 @@ namespace GestMoney.Clases
 
         public KeyValuePair<bool, string> Modify(string sql_condicion, List<string> campos_cambiar)
         {
-
             var result = new KeyValuePair<bool, string>();
             string sql_update = "UPDATE dbo.Recibo set ";
             bool primer_update = true;
@@ -210,7 +206,8 @@ namespace GestMoney.Clases
                 //Preparo las variables por inyeccion
                 using (var command = new SqlCommand(sql_update + sql_condicion))
                 {
-                    command.Connection = SQLConecction.conn;
+                    command.Connection = new SqlConnection(SQLConection.ConnectionString);
+                    command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
                         

@@ -37,7 +37,7 @@ namespace GestMoney.Servicios
                     {
                         result = new KeyValuePair<bool, object>(false, "El importe no puede estar vacio");
                     }//Si el tipo es nulo o no es uno valido, al ser un campo obligatorio, error
-                    else if (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"]))
+                    else if (parametros["tipo"] == null || SQLConection.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"]))
                     {
                         result = new KeyValuePair<bool, object>(false, "La factura debe tener un tipo valido");
                     }
@@ -125,7 +125,7 @@ namespace GestMoney.Servicios
                     {
                         result = new KeyValuePair<bool, object>(false, "El importe no puede estar vacio");
                     }
-                    else if (parametros.ContainsKey("tipo") && (parametros["tipo"] == null || Funciones.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"])))
+                    else if (parametros.ContainsKey("tipo") && (parametros["tipo"] == null || SQLConection.ExisteEnTabla("dbo.T_Tipo_Recibo", "nombre = " + parametros["tipo"])))
                     {
                         result = new KeyValuePair<bool, object>(false, "La factura debe tener un tipo valido");
                     }
@@ -174,7 +174,7 @@ namespace GestMoney.Servicios
             {
                 var result = new KeyValuePair<bool, string>();
 
-                if (Funciones.ExisteEnTabla("dbo.T_Users", "nivel = 1 and usuario = '" + Environment.UserName + "'"))
+                if (SQLConection.ExisteEnTabla("dbo.T_Users", "nivel = 1 and usuario = '" + Environment.UserName + "'"))
                 {
                     Factura factura = new Factura();
                     result = factura.DeleteAll();
@@ -218,9 +218,11 @@ namespace GestMoney.Servicios
         {
             try
             {
-                dataAdapter = (id == 0)? new SqlDataAdapter(vRecibos, SQLConecction.conn): new SqlDataAdapter(vRecibos + " where id = " + id, SQLConecction.conn);
-                                
-                dataAdapter.Fill(datafill);
+                using (SqlConnection connection = new SqlConnection(SQLConection.ConnectionString))
+                {
+                    dataAdapter = (id == 0) ? new SqlDataAdapter(vRecibos, connection) : new SqlDataAdapter(vRecibos + " where id = " + id, connection);
+                    dataAdapter.Fill(datafill);
+                }
                 
                 return new KeyValuePair<bool, object>(true, "");
             }
