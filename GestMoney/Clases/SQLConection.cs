@@ -44,9 +44,37 @@ namespace GestMoney.Clases
             }
         }
 
-        public static bool ObtenerDatobyID(string tabla, string condicion)
+        public static string ExtraeDato(string tabla, string campo, string condicion)
         {
-            bool result;
+            string result = "";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    SqlCommand command = new SqlCommand("select "+ campo +" from " + tabla + " where " + condicion, connection);
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        //TODO: pasar a foreach generico para asignar atributos
+                        result = reader[campo].ToString();
+                    }
+                    reader.Close();
+                    return result;
+                }
+
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+        }
+
+        public static int ObtenerDatobyID(string tabla, string condicion)
+        {
+            int result = 0;
 
             try
             {
@@ -58,11 +86,8 @@ namespace GestMoney.Clases
 
                     if (reader.HasRows)
                     {
-                        result = true;
-                    }
-                    else
-                    {
-                        result = false;
+                        //TODO: pasar a foreach generico para asignar atributos
+                        result = (int)reader["id"];
                     }
                     reader.Close();
                     return result;
@@ -70,7 +95,7 @@ namespace GestMoney.Clases
             }
             catch (Exception e)
             {
-                return false;
+                return 0;
             }
         }
     }

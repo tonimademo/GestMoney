@@ -15,6 +15,8 @@ namespace GestMoney.Clases
         private string tipo;
         private string concepto;
         private decimal importe;
+        private int id_grupo;
+        private int id_clase;
         private DateTime fecha_importe;
         private DateTime gc_fecha_creacion;
         private DateTime gc_fecha_modificacion;
@@ -24,6 +26,8 @@ namespace GestMoney.Clases
 
         public int Id{get{return id;}}
         public string Tipo { get { return tipo; } set { tipo = value; } }
+        public string Grupo { get { return SQLConection.ExtraeDato("T_Grupo", "nombre","id = " + id); } set { tipo = value; } }
+        public string Clase { get { return SQLConection.ExtraeDato("T_Clase", "nombre", "id = " + id); } set { tipo = value; } }
         public string Concepto { get { return concepto; } set { concepto = value;} }
         public decimal Importe { get { return importe; } set { importe = value; } }
         public DateTime Fecha_Importe { get { return fecha_importe; } set { fecha_importe = value; } }
@@ -54,6 +58,8 @@ namespace GestMoney.Clases
                     //TODO: pasar a foreach generico para asignar atributos
                     id = (int) reader["id"];
                     tipo = (string) reader["tipo"];
+                    id_grupo = (int)reader["id_grupo"];
+                    id_clase = (int)reader["id_clase"];
                     importe = (Decimal)reader["importe"];
                     concepto = (string) reader["concepto"];
                     fecha_importe = (DateTime) reader["fecha_importe"];
@@ -69,6 +75,8 @@ namespace GestMoney.Clases
                         Dictionary<string, object> fila = new Dictionary<string, object>();
                         fila.Add("id", reader["id"]);
                         fila.Add("tipo", reader["tipo"]);
+                        fila.Add("id_grupo", reader["id_grupo"]);
+                        fila.Add("id_clase", reader["id_clase"]);
                         fila.Add("importe", reader["importe"]);
                         fila.Add("concepto", reader["concepto"]);
                         fila.Add("fecha_importe", reader["fecha_importe"]);
@@ -92,6 +100,90 @@ namespace GestMoney.Clases
             try
             {
                 command = new SqlCommand("Select * from dbo.T_Recibo", connection);
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    Dictionary<int, List<string>> fila = new Dictionary<int, List<string>>();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            List<string> fila_datos = new List<string>();
+                            //TODO: pasar a foreach generico para asignar atributos
+                            fila_datos.Add(reader["nombre"].ToString());
+                            fila_datos.Add(reader["descripcion"].ToString());
+                            fila.Add(Convert.ToInt32(reader["id"]), fila_datos);
+                        }
+
+                        result = new KeyValuePair<bool, Dictionary<int, List<string>>>(true, fila);
+                    }
+                    else
+                    {
+                        result = new KeyValuePair<bool, Dictionary<int, List<string>>>(true, fila);
+                    }
+                    reader.Close();
+                }
+
+                return result;
+            }
+            catch (SqlException e)
+            {
+                return new KeyValuePair<bool, Dictionary<int, List<string>>>(false, new Dictionary<int, List<string>>() { { 0, new List<string>() { "Error en la llamada SQL, Llame a un Administrador (" + e + ")" } } });
+            }
+
+        }
+
+        public KeyValuePair<bool, Dictionary<int, List<string>>> Clases()
+        {
+            SqlConnection connection = new SqlConnection(SQLConection.ConnectionString);
+            SqlCommand command;
+            KeyValuePair<bool, Dictionary<int, List<string>>> result = new KeyValuePair<bool, Dictionary<int, List<string>>>();
+
+            try
+            {
+                command = new SqlCommand("Select * from dbo.T_Clase", connection);
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    Dictionary<int, List<string>> fila = new Dictionary<int, List<string>>();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            List<string> fila_datos = new List<string>();
+                            //TODO: pasar a foreach generico para asignar atributos
+                            fila_datos.Add(reader["nombre"].ToString());
+                            fila_datos.Add(reader["descripcion"].ToString());
+                            fila.Add(Convert.ToInt32(reader["id"]), fila_datos);
+                        }
+
+                        result = new KeyValuePair<bool, Dictionary<int, List<string>>>(true, fila);
+                    }
+                    else
+                    {
+                        result = new KeyValuePair<bool, Dictionary<int, List<string>>>(true, fila);
+                    }
+                    reader.Close();
+                }
+
+                return result;
+            }
+            catch (SqlException e)
+            {
+                return new KeyValuePair<bool, Dictionary<int, List<string>>>(false, new Dictionary<int, List<string>>() { { 0, new List<string>() { "Error en la llamada SQL, Llame a un Administrador (" + e + ")" } } });
+            }
+
+        }
+
+        public KeyValuePair<bool, Dictionary<int, List<string>>> Grupos()
+        {
+            SqlConnection connection = new SqlConnection(SQLConection.ConnectionString);
+            SqlCommand command;
+            KeyValuePair<bool, Dictionary<int, List<string>>> result = new KeyValuePair<bool, Dictionary<int, List<string>>>();
+
+            try
+            {
+                command = new SqlCommand("Select * from dbo.T_Grupo", connection);
                 connection.Open();
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
