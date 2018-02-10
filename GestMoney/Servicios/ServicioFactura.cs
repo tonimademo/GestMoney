@@ -41,10 +41,22 @@ namespace GestMoney.Servicios
                     {
                         result = new KeyValuePair<bool, object>(false, "La factura debe tener un tipo valido");
                     }
+                    //Si el grupo es nulo o no es uno valido, al ser un campo obligatorio, error
+                    else if (parametros["grupo"] == null || SQLConection.ExisteEnTabla("dbo.T_Grupo_Recibo", "nombre = " + parametros["grupo"]))
+                    {
+                        result = new KeyValuePair<bool, object>(false, "La factura debe tener un grupo valido");
+                    }
+                    //Si la clase es nulo o no es uno valido, al ser un campo obligatorio, error
+                    else if (parametros["clase"] == null || SQLConection.ExisteEnTabla("dbo.T_Clase_Recibo", "nombre = " + parametros["clase"]))
+                    {
+                        result = new KeyValuePair<bool, object>(false, "La factura debe tener una clase valida");
+                    }
                     else
                     {
                         //Asigno el valor de los parametros el objeto factura
                         factura.Tipo = (parametros.ContainsKey("tipo")) ? parametros["tipo"].ToString() : null;
+                        factura.Clase = (parametros.ContainsKey("clase")) ? parametros["clase"].ToString() : null;
+                        factura.Grupo = (parametros.ContainsKey("grupo")) ? parametros["grupo"].ToString() : null;
                         factura.Importe = (parametros.ContainsKey("importe")) ? Convert.ToDecimal(parametros["importe"], new CultureInfo("en-US")) : default(decimal);
                         factura.Fecha_Importe = (parametros.ContainsKey("fecha_importe")) ? Convert.ToDateTime(parametros["fecha_importe"].ToString()) : default(DateTime);
                         factura.Concepto = (parametros.ContainsKey("concepto")) ? parametros["concepto"].ToString() : null;
@@ -129,6 +141,14 @@ namespace GestMoney.Servicios
                     {
                         result = new KeyValuePair<bool, object>(false, "La factura debe tener un tipo valido");
                     }
+                    else if (parametros.ContainsKey("clase") && (parametros["clase"] == null || SQLConection.ExisteEnTabla("dbo.T_Clase_Recibo", "nombre = " + parametros["clase"])))
+                    {
+                        result = new KeyValuePair<bool, object>(false, "La factura debe tener una clase valida");
+                    }
+                    else if (parametros.ContainsKey("grupo") && (parametros["grupo"] == null || SQLConection.ExisteEnTabla("dbo.T_Grupo_Recibo", "nombre = " + parametros["grupo"])))
+                    {
+                        result = new KeyValuePair<bool, object>(false, "La factura debe tener un grupo valido");
+                    }
                     else
                     {
 
@@ -211,6 +231,42 @@ namespace GestMoney.Servicios
             {
                 return new KeyValuePair<bool, Dictionary<int, List<string>>>(false, new Dictionary<int, List<string>>() { { 0, new List<string>() { "Error no controlado, Llame a un Administrador (" + e + ")" } } });
                     
+            }
+        }
+
+        static public KeyValuePair<bool, Dictionary<int, List<string>>> Grupos()
+        {
+            try
+            {
+                var result = new KeyValuePair<bool, Dictionary<int, List<string>>>();
+
+                Factura factura = new Factura();
+                result = factura.Grupos();
+                return new KeyValuePair<bool, Dictionary<int, List<string>>>(result.Key, result.Value);
+
+            }
+            catch (Exception e)
+            {
+                return new KeyValuePair<bool, Dictionary<int, List<string>>>(false, new Dictionary<int, List<string>>() { { 0, new List<string>() { "Error no controlado, Llame a un Administrador (" + e + ")" } } });
+
+            }
+        }
+
+        static public KeyValuePair<bool, Dictionary<int, List<string>>> Clases()
+        {
+            try
+            {
+                var result = new KeyValuePair<bool, Dictionary<int, List<string>>>();
+
+                Factura factura = new Factura();
+                result = factura.Clases();
+                return new KeyValuePair<bool, Dictionary<int, List<string>>>(result.Key, result.Value);
+
+            }
+            catch (Exception e)
+            {
+                return new KeyValuePair<bool, Dictionary<int, List<string>>>(false, new Dictionary<int, List<string>>() { { 0, new List<string>() { "Error no controlado, Llame a un Administrador (" + e + ")" } } });
+
             }
         }
 

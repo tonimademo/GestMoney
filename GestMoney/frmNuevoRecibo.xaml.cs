@@ -32,13 +32,29 @@ namespace GestMoney
         {
 
             KeyValuePair<bool, Dictionary<int, List<string>>> tipos = new KeyValuePair<bool, Dictionary<int, List<string>>>();
+            KeyValuePair<bool, Dictionary<int, List<string>>> grupos = new KeyValuePair<bool, Dictionary<int, List<string>>>();
+            KeyValuePair<bool, Dictionary<int, List<string>>> clases = new KeyValuePair<bool, Dictionary<int, List<string>>>();
             tipos = ServicioFactura.Tipos();
+            grupos = ServicioFactura.Grupos();
+            clases = ServicioFactura.Clases();
 
             if (tipos.Key)
             {
                 foreach (KeyValuePair<int, List<string>> tipo in tipos.Value)
                 {
                     cbTipoRecibo.Items.Add( new ComboItem(tipo.Value[0], tipo.Key));
+
+                }
+
+                foreach (KeyValuePair<int, List<string>> grupo in grupos.Value)
+                {
+                    cbGrupoRecibo.Items.Add(new ComboItem(grupo.Value[0], grupo.Key));
+
+                }
+
+                foreach (KeyValuePair<int, List<string>> clase in clases.Value)
+                {
+                    cbClaseRecibo.Items.Add(new ComboItem(clase.Value[0], clase.Key));
 
                 }
 
@@ -55,10 +71,15 @@ namespace GestMoney
         {
             Dictionary<string, object> valores;
             KeyValuePair<bool, object> result_test = new KeyValuePair<bool, object>();
-            ComboItem cbotipo;
-            cbotipo = (ComboItem) cbTipoRecibo.SelectedItem;
+            ComboItem cbtipo;
+            ComboItem cbclase;
+            ComboItem cbgrupo;
+            cbtipo = (ComboItem) cbTipoRecibo.SelectedItem;
+            cbclase = (ComboItem)cbClaseRecibo.SelectedItem;
+            cbgrupo = (ComboItem)cbGrupoRecibo.SelectedItem;
 
-            valores = new Dictionary<string, object> { { "tipo", cbotipo.Valor }, { "importe", txtImporte.Text }, { "concepto", txtConcepto.Text }, { "fecha_importe", txtFechaRecibo.Text } };
+
+            valores = new Dictionary<string, object> { { "tipo", cbtipo.Valor }, { "clase", cbclase.Valor }, { "grupo", cbgrupo.Valor }, { "importe", txtImporte.Text }, { "concepto", txtConcepto.Text }, { "fecha_importe", txtFechaRecibo.Text } };
             result_test = ServicioFactura.Insert(valores);
 
             if (result_test.Key == true)

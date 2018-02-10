@@ -25,8 +25,10 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=tipo}" ClipboardContentBinding="{x:Null}" Header="Tipo" Width="1*"/>
                 <DataGridTextColumn Binding="{Binding Path=importe}" ClipboardContentBinding="{x:Null}" Header="Importe" Width="2*"/>
-                <DataGridTextColumn Binding="{Binding Path=concepto}" ClipboardContentBinding="{x:Null}" Header="Concepto" Width="3*"/>
-                <DataGridTextColumn Binding="{Binding Path=fecha_importe, StringFormat=\{0:dd/MM/yyyy\}}" ClipboardContentBinding="{x:Null}" Header="Fecha De Importe" Width="2*"/>
+                <DataGridTextColumn Binding="{Binding Path=clase}" ClipboardContentBinding="{x:Null}" Header="Clase" Width="2*"/>
+                <DataGridTextColumn Binding="{Binding Path=grupo}" ClipboardContentBinding="{x:Null}" Header="Grupo" Width="3*"/>
+                <DataGridTextColumn Binding="{Binding Path=concepto}" ClipboardContentBinding="{x:Null}" Header="Concepto" Width="4*"/>
+                <DataGridTextColumn Binding="{Binding Path=fecha_importe, StringFormat=\{0:dd/MM/yyyy\}}" ClipboardContentBinding="{x:Null}" Header="Fecha De Importe" Width="1*"/>
 
             </DataGrid.Columns>
             <DataGrid.RowStyle>
