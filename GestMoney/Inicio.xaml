@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GestMoney"
         mc:Ignorable="d"
-        Title="Inicio" Background="#FFEAE2BF" Height="657" Width="1444" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
+        Title="Inicio" Background="#FFEAE2BF" Height="701" Width="1444" ResizeMode="NoResize" Loaded="Inicio_Loaded" WindowStartupLocation="CenterScreen">
 
 
     <Grid Height="346" Margin="6,7,6,0" VerticalAlignment="Top">
@@ -68,9 +68,24 @@
             </Grid>
 
         </GroupBox>
-        <Button x:Name="btnNuevo" Content="Nuevo" HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top" Width="82" Height="27" Click="btnNuevo_Click"/>
-        <Label Content="Saldo Total:" HorizontalAlignment="Left" Height="34" Margin="24,425,0,-195" Grid.Row="1" VerticalAlignment="Top" Width="95" FontSize="16"/>
-        <Label x:Name="lblSaldoTotal" Content="{Binding SaldoTotal}" HorizontalAlignment="Left" Height="34" Margin="124,425,0,-195" Grid.Row="1" VerticalAlignment="Top" Width="153" FontSize="16"/>
+        <Button x:Name="btnNuevo" Content="Nuevo" HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" Width="82" Height="27" Click="btnNuevo_Click" Grid.Column="1"/>
+        <Label Content="Saldo Total:" HorizontalAlignment="Left" Height="34" Margin="25,17,0,0" VerticalAlignment="Top" Width="95" FontSize="16"/>
+        <Label x:Name="lblSaldoTotal" Content="{Binding SaldoTotal}" HorizontalAlignment="Left" Height="34" Margin="125,17,0,0" VerticalAlignment="Top" Width="153" FontSize="16"/>
+        <Grid HorizontalAlignment="Left" Height="154" Margin="25,425,0,-315" Grid.Row="1" VerticalAlignment="Top" Width="1379" Grid.ColumnSpan="2">
+            <TextBox x:Name="txtDetalleConcepto" HorizontalAlignment="Left" Height="23" Margin="97,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199" Text="{Binding ElementName=dgvRecibos, Path=SelectedItem.concepto, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Concepto:" HorizontalAlignment="Left" Margin="28,7,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="txtDetalleImporte" HorizontalAlignment="Left" Height="23" Margin="372,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="88"/>
+            <Label Content="Importe:" HorizontalAlignment="Left" Margin="312,7,0,0" VerticalAlignment="Top"/>
+            <Label Content="€" HorizontalAlignment="Left" Margin="460,10,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="txtDetalleClase" HorizontalAlignment="Left" Height="23" Margin="539,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="136"/>
+            <Label Content="Clase:" HorizontalAlignment="Left" Margin="494,7,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="txtDetalleGrupo" HorizontalAlignment="Left" Height="23" Margin="739,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="136"/>
+            <Label Content="Grupo:" HorizontalAlignment="Left" Margin="694,7,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="txtDetalleObservaciones" HorizontalAlignment="Left" Height="91" Margin="97,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="1282"/>
+            <Label Content="Observaciones:" HorizontalAlignment="Left" Margin="2,35,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="lblDetalleHora" Content="" HorizontalAlignment="Left" Margin="1289,129,0,-1" VerticalAlignment="Top" Width="90"/>
+            <Label x:Name="lblDetalleFecha" Content="" HorizontalAlignment="Left" Margin="1194,128,0,0" VerticalAlignment="Top" Width="95"/>
+        </Grid>
 
     </Grid>
 </Window>
